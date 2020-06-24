@@ -731,7 +731,7 @@
         }
       ]
     },
-    "/members/{TranWebMemberId}/payouts": {
+    "/members/{tranWebMemberId}/payouts": {
       "post": {
         "responses": {
           "200": {
@@ -759,40 +759,60 @@
             "name": "body",
             "schema": {
               "type": "object",
-              "required": [
-                "CnsmrSeqNo",
-                "MemberAcctNo",
-                "CashAmt"
-              ],
               "properties": {
-                "CnsmrSeqNo": {
-                  "type": "string"
+                "payoutId": {
+                  "type": "string",
+                  "description": "Payout ID generated in Platform System",
+                  "maxLength": 52
                 },
-                "MemberAcctNo": {
-                  "type": "string"
+                "bankAccountNumber": {
+                  "type": "string",
+                  "description": "Beneficiary bank account number",
+                  "maxLength": 50
                 },
-                "CashAmt": {
-                  "type": "string"
+                "amount": {
+                  "type": "string",
+                  "description": "Cash out amount",
+                  "maxLength": 20
                 },
-                "Remark": {
-                  "type": "string"
+                "payoutDate": {
+                  "type": "string",
+                  "description": "Transaction date",
+                  "maxLength": 8
+                },
+                "payoutTime": {
+                  "type": "string",
+                  "description": "Transaction time",
+                  "maxLength": 20
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Remark",
+                  "maxLength": 300
                 }
-              }
-            }
+              },
+              "required": [
+                "payoutId",
+                "bankAccountNumber",
+                "amount",
+                "payoutDate",
+                "payoutTime"
+              ]
+            },
+            "description": ""
           }
         ]
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Member id from platform"
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
         }
       ]
     },
-    "/members/{TranWebMemberId}/payouts/{CnsmrSeqNo}": {
+    "/members/{tranWebMemberId}/payouts/{payoutId}": {
       "get": {
         "responses": {
           "200": {
@@ -800,10 +820,15 @@
             "schema": {
               "$ref": "#/definitions/payout"
             }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
           }
         },
         "summary": "Get Payout",
-        "description": "Get a payout request details by id.",
+        "description": "Get a payout request details by payoutId.",
         "consumes": [
           "application/json"
         ],
@@ -817,18 +842,16 @@
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Member id from platform"
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
         },
         {
-          "name": "CnsmrSeqNo",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Payout request uuid generated in Platform System"
+          "name": "payoutId",
+          "in": "path",
+          "required": true
         }
       ]
     },
