@@ -184,7 +184,7 @@
         "operationId": "delete-webhook-registration"
       }
     },
-    "/members/{TranWebMemberId}/payments": {
+    "/members/{TranWebMemberId}/transactions": {
       "post": {
         "responses": {
           "200": {
@@ -194,8 +194,8 @@
             }
           }
         },
-        "summary": "Send Payment",
-        "description": "Send a payment to the host after platform successfully received payment from customers. Commission amount plus MemberFillAmt should equal to the customer paid total amount. This method tracks actual payment to host and conmmission fees to platform of each order. \n\nReturn type is `Payment` object\n",
+        "summary": "Send transaction",
+        "description": "Send a payment to the host after platform successfully received payment from customers. Commission amount plus MemberFillAmt should equal to the customer paid total amount. This method tracks actual payment to host and conmmission fees to platform of each order. \n\nReturn type is `transaction` object\n",
         "tags": [
           "Payment"
         ],
@@ -205,7 +205,7 @@
         "produces": [
           "application/json"
         ],
-        "operationId": "send-payment",
+        "operationId": "send-transaction",
         "parameters": [
           {
             "in": "body",
@@ -258,7 +258,7 @@
         }
       ]
     },
-    "/members/{TranWebMemberId}/coupons": {
+    "/topup": {
       "post": {
         "responses": {
           "200": {
@@ -268,55 +268,31 @@
             }
           }
         },
-        "summary": "Send Coupon",
-        "description": "Send a coupon to the host",
-        "tags": [
-          "Coupon"
-        ],
+        "summary": "Top-up",
+        "description": "top-up a specific account",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "operationId": "send-coupon",
+        "operationId": "top-up",
         "parameters": [
           {
             "in": "body",
             "name": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "CnsmrSeqNo": {
-                  "type": "string",
-                  "description": "Unique serial number from platform"
-                },
-                "MemberFillAmt": {
-                  "type": "string"
-                },
-                "Remark": {
-                  "type": "string",
-                  "description": "Remark"
-                }
-              },
-              "required": [
-                "CnsmrSeqNo",
-                "MemberFillAmt"
-              ]
+              "type": "object"
             }
           }
+        ],
+        "tags": [
+          "Top-up"
         ]
       },
-      "parameters": [
-        {
-          "name": "TranWebMemberId",
-          "in": "path",
-          "type": "string",
-          "required": true
-        }
-      ]
+      "parameters": []
     },
-    "/members/{TranWebMemberId}/payments/{CnsmrSeqNo}": {
+    "/members/{tranWebMemberId}/transactions/{transactionId}": {
       "get": {
         "responses": {
           "200": {
@@ -326,8 +302,8 @@
             }
           }
         },
-        "description": "Get a payment request details by id.\n\nReturn type is `Payment`",
-        "summary": "Get Payment",
+        "description": "Get a transaction request details by id.\n\nReturn type is `transaction`",
+        "summary": "Get Transaction",
         "tags": [
           "Payment"
         ],
@@ -337,22 +313,20 @@
         "produces": [
           "application/json"
         ],
-        "operationId": "get-payment"
+        "operationId": "get-transaction"
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Member id from platform"
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
         },
         {
-          "name": "CnsmrSeqNo",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Payment request uuid generated in Platform System"
+          "name": "transactionId",
+          "in": "path",
+          "required": true
         }
       ]
     },
@@ -396,70 +370,6 @@
         }
       ]
     },
-    "/payments": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/payment"
-            }
-          }
-        },
-        "summary": "Return Payment",
-        "description": "Cancel a previously completed payment to a host. \nRequest this method after platform receiving cancellation request from customer(s). Total of MemberFillAmt amount and commission amount should no larger than original amount in the targeting completed payment. ",
-        "tags": [
-          "Payment"
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "operationId": "return-payment",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "CnsmrSeqNo": {
-                  "type": "string"
-                },
-                "OldFrontSeqNo": {
-                  "type": "string"
-                },
-                "TranWebMemberId": {
-                  "type": "string"
-                },
-                "MemberFillAmt": {
-                  "type": "string"
-                },
-                "Commission": {
-                  "type": "string"
-                },
-                "PayChannelTranSeqNo": {
-                  "type": "string"
-                },
-                "Remark": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "CnsmrSeqNo",
-                "OldFrontSeqNo",
-                "TranWebMemberId",
-                "MemberFillAmt",
-                "Commission",
-                "PayChannelTranSeqNo"
-              ]
-            }
-          }
-        ]
-      }
-    },
     "/members": {
       "post": {
         "responses": {
@@ -489,35 +399,43 @@
             "schema": {
               "type": "object",
               "properties": {
-                "TranWebMemberId": {
-                  "type": "string"
+                "tranWebMemberId": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "description": "Member ID from platform"
                 },
-                "UserNickName": {
-                  "type": "string"
+                "userNickName": {
+                  "type": "string",
+                  "description": "Member nick name",
+                  "maxLength": 150
                 },
-                "Mobile": {
-                  "type": "string"
+                "mobile": {
+                  "type": "string",
+                  "description": "Mobile number",
+                  "maxLength": 30
                 },
-                "Email": {
-                  "type": "string"
+                "email": {
+                  "type": "string",
+                  "description": "Email address",
+                  "maxLength": 150
                 },
-                "Remark": {
-                  "type": "string"
+                "remark": {
+                  "type": "string",
+                  "description": "Remark",
+                  "maxLength": 300
                 }
               },
               "required": [
-                "TranWebMemberId",
-                "MemberName",
-                "UserNickName",
-                "MemberGlobalType",
-                "MemberGlobalId"
+                "tranWebMemberId",
+                "userNickName"
               ]
-            }
+            },
+            "description": ""
           }
         ]
       }
     },
-    "/members/{TranWebMemberId}": {
+    "/members/{tranWebMemberId}": {
       "get": {
         "responses": {
           "200": {
@@ -542,11 +460,10 @@
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Member id from platform"
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
         }
       ],
       "delete": {
@@ -573,7 +490,7 @@
         "operationId": "delete-member"
       }
     },
-    "/members/{TranWebMemberId}/bankaccounts/{MemberAcctNo}": {
+    "/members/{tranWebMemberId}/bankaccounts/{bankAccountNumber}": {
       "delete": {
         "responses": {
           "200": {
@@ -599,15 +516,15 @@
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
+          "name": "tranWebMemberId",
+          "in": "path",
           "required": true
         },
         {
-          "name": "MemberAcctNo",
-          "in": "path",
           "type": "string",
+          "name": "bankAccountNumber",
+          "in": "path",
           "required": true
         }
       ],
@@ -616,8 +533,7 @@
           "200": {
             "description": "",
             "schema": {
-              "type": "object",
-              "properties": {}
+              "type": "object"
             }
           }
         },
@@ -634,27 +550,94 @@
             "schema": {
               "type": "object",
               "properties": {
-                "verificationCode": {
+                "verifyType": {
                   "type": "string",
-                  "description": "Verification code/amount, one of the below:\n\n| owner type| value |\n|---|---|\n| private| SMS Verification Code|\n| entity | Random amount deposited into beneficiary account|"
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
+                  "enum": [
+                    "1",
+                    "2"
+                  ],
+                  "maxLength": 2
+                },
+                "verifyInfo": {
+                  "type": "string",
+                  "maxLength": 10,
+                  "description": "Input SMS code if verifyType=1\nInput amount of receiving fund if verifyType=2"
                 }
               },
               "required": [
-                "verificationCode"
+                "verifyType",
+                "verifyInfo"
               ]
             }
           }
         ]
+      },
+      "get": {
+        "summary": "Get fund transfer status",
+        "operationId": "get-fund-transfer-status",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "maxLength": 2,
+                  "enum": [
+                    "0",
+                    "1",
+                    "2"
+                  ],
+                  "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | Pending |"
+                },
+                "failMsg": {
+                  "type": "string",
+                  "maxLength": 300,
+                  "description": "Error message if applicable"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            }
+          }
+        },
+        "description": "get the transfer status for small amount verification",
+        "tags": [
+          "Member"
+        ]
       }
     },
-    "/members/{TranWebMemberId}/bankaccounts": {
+    "/members/{tranWebMemberId}/bankaccounts": {
       "post": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/member"
-            }
+              "type": "object",
+              "enum": [
+                "0",
+                "1"
+              ],
+              "description": "whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Need toverify |\n| 1 | No need to verify |\n\n",
+              "properties": {
+                "needVerify": {
+                  "type": "string",
+                  "enum": [
+                    "0",
+                    "1"
+                  ],
+                  "maxLength": 2,
+                  "description": "Whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | need to verify |\n| 1 | no need to verify |\n\n\n"
+                }
+              },
+              "required": [
+                "needVerify"
+              ]
+            },
+            "headers": {}
           }
         },
         "summary": "Add Bank Account",
@@ -676,41 +659,66 @@
             "schema": {
               "type": "object",
               "properties": {
-                "BankName": {
-                  "type": "string"
+                "verifyType": {
+                  "type": "string",
+                  "maxLength": 1,
+                  "enum": [
+                    "1",
+                    "2"
+                  ],
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
                 },
-                "BankBranchName": {
-                  "type": "string"
+                "memberIdType": {
+                  "type": "string",
+                  "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
+                  "enum": [
+                    "1",
+                    "4",
+                    "52",
+                    "73"
+                  ],
+                  "maxLength": 2
                 },
-                "BankZone": {
-                  "type": "string"
+                "memberName": {
+                  "type": "string",
+                  "description": "Member name",
+                  "maxLength": 150
                 },
-                "CnapsBranchId": {
-                  "type": "string"
+                "memberIdNumber": {
+                  "type": "string",
+                  "description": "Member ID number",
+                  "maxLength": 32
                 },
-                "MemberAcctNo": {
-                  "type": "string"
+                "bankAccountNumber": {
+                  "type": "string",
+                  "description": "Bank account number or card number",
+                  "maxLength": 50
                 },
-                "BankMobile": {
-                  "type": "string"
+                "bankName": {
+                  "type": "string",
+                  "description": "Bank name",
+                  "maxLength": 80
                 },
-                "MemberGlobalType": {
-                  "type": "string"
+                "bankCnapsCode": {
+                  "type": "string",
+                  "description": "Bank code defined in China National Advanced Payment System",
+                  "maxLength": 30
                 },
-                "MemberGlobalId": {
-                  "type": "string"
-                },
-                "MemberName": {
-                  "type": "string"
+                "mobile": {
+                  "type": "string",
+                  "description": "Mobile number registered in bank",
+                  "maxLength": 30
                 }
               },
               "required": [
-                "BankName",
-                "BankBranchName",
-                "BankZone",
-                "CnapsBranchId",
-                "MemberAcctNo",
-                "BankMobile"
+                "verifyType",
+                "memberIdType",
+                "memberName",
+                "memberIdNumber",
+                "bankAccountNumber",
+                "bankName",
+                "bankCnapsCode",
+                "mobile"
               ]
             }
           }
@@ -718,11 +726,10 @@
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Member id from platform"
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
         }
       ]
     },
@@ -954,6 +961,30 @@
           "description": "Event id in Lianlian Pay's system"
         }
       ]
+    },
+    "/members/{tranWebMemberId}/bankaccounts}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get bank account wait to be verified",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "operationId": "get-members-tranWebMemberId-bankaccounts",
+        "description": "Get bank account wait to be verified"
+      }
     }
   },
   "definitions": {
@@ -1294,7 +1325,7 @@
           "description": "Beneficiary bank account number",
           "maxLength": 50
         },
-         "bankName": {
+        "bankName": {
           "type": "string",
           "maxLength": 52,
           "description": "Bank name"
