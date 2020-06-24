@@ -424,14 +424,6 @@
             "name": "body",
             "schema": {
               "type": "object",
-              "required": [
-                "CnsmrSeqNo",
-                "OldFrontSeqNo",
-                "TranWebMemberId",
-                "MemberFillAmt",
-                "Commission",
-                "PayChannelTranSeqNo"
-              ],
               "properties": {
                 "CnsmrSeqNo": {
                   "type": "string"
@@ -454,62 +446,14 @@
                 "Remark": {
                   "type": "string"
                 }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "/coupons": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/coupon"
-            }
-          }
-        },
-        "summary": "Return Coupon",
-        "description": "Cancel a previously completed coupon to a host. ",
-        "tags": [
-          "Coupon"
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "operationId": "return-coupon",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "CnsmrSeqNo": {
-                  "type": "string"
-                },
-                "OldFrontSeqNo": {
-                  "type": "string"
-                },
-                "TranWebMemberId": {
-                  "type": "string"
-                },
-                "MemberFillAmt": {
-                  "type": "string"
-                },
-                "Remark": {
-                  "type": "string"
-                }
               },
               "required": [
                 "CnsmrSeqNo",
                 "OldFrontSeqNo",
                 "TranWebMemberId",
-                "MemberFillAmt"
+                "MemberFillAmt",
+                "Commission",
+                "PayChannelTranSeqNo"
               ]
             }
           }
@@ -1117,114 +1061,108 @@
     },
     "bank-account": {
       "type": "object",
-      "title": "Bank Account ",
+      "title": "Bank Account",
       "description": "Beneficiary bank account object defined in Lianlian Pay bank partner's system.",
       "properties": {
-        "MemberAcctNo": {
+        "verifyType": {
           "type": "string",
-          "description": "Bank account number or card number",
-          "maxLength": 50
-        },
-        "MemberGlobalType": {
-          "type": "string",
-          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 52 | Business Registration Certificate |",
           "enum": [
-            1,
-            52
+            "1",
+            "2"
+          ],
+          "maxLength": 1,
+          "minLength": 1,
+          "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
+        },
+        "memberIdType": {
+          "type": "string",
+          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
+          "enum": [
+            "1",
+            "52",
+            "4",
+            "73"
           ],
           "maxLength": 5
         },
-        "MemberGlobalId": {
+        "memberIdNumber": {
           "type": "string",
           "description": "Member ID number",
           "maxLength": 32
         },
-        "MemberName": {
+        "memberName": {
           "type": "string",
           "description": "Member name",
           "maxLength": 150
         },
-        "BankName": {
+        "bankAccountNumber": {
+          "type": "string",
+          "description": "Bank account number or card number",
+          "maxLength": 50
+        },
+        "bankName": {
           "type": "string",
           "description": "Bank name",
           "maxLength": 80
         },
-        "BankBranchName": {
-          "type": "string",
-          "description": "Bank branch name",
-          "maxLength": 80
-        },
-        "BankZone": {
-          "type": "string",
-          "description": "Bank zone",
-          "maxLength": 20
-        },
-        "CnapsBranchId": {
+        "bankCnapsCode": {
           "type": "string",
           "description": "Bank code defined in China National Advanced Payment System",
           "maxLength": 30
         },
-        "BankMobile": {
+        "mobile": {
           "type": "string",
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      },
-      "required": [
-        "MemberAcctNo",
-        "BankName",
-        "BankBranchName",
-        "BankZone",
-        "CnapsBranchId",
-        "BankMobile"
-      ]
+      }
     },
     "member": {
       "type": "object",
       "title": "Member",
       "description": "Member account of a single platform host defined in Lianlian Pay bank partner's system.",
       "properties": {
-        "TranWebMemberId": {
+        "tranWebMemberId": {
           "type": "string",
           "description": "Member ID from platform",
           "maxLength": 32
         },
-        "UserNickName": {
+        "userNickName": {
           "type": "string",
           "description": "Member nick name",
           "maxLength": 150
         },
-        "Mobile": {
+        "mobile": {
           "type": "string",
           "description": "Mobile number",
           "maxLength": 30
         },
-        "Email": {
+        "email": {
           "type": "string",
           "description": "Email address",
           "maxLength": 150
         },
-        "AcctAvailBal": {
+        "acctAvailBal": {
           "type": "string",
           "description": "Account balance",
           "maxLength": 20
         },
-        "CashAmt": {
+        "cashAmt": {
           "type": "string",
           "description": "Payout balance, less than or equal to `AcctAvailBal`",
           "maxLength": 20
         },
-        "MaintenanceDate": {
+        "maintenanceDate": {
           "type": "string",
           "description": "Modify date",
           "maxLength": 8
         },
-        "Remark": {
+        "remark": {
           "type": "string",
           "description": "Remark",
           "maxLength": 300
         },
-        "BankAccounts": {
+        "bankAccounts": {
           "type": "array",
           "description": "Beneficiary bank accounts",
           "items": {
@@ -1233,85 +1171,92 @@
         }
       }
     },
-    "payment": {
+    "transaction": {
       "type": "object",
-      "title": "Payment ",
-      "description": "Data set defined in Lianlian Pay bank partner's system to describe a payment from platform to a host.",
+      "title": "Transaction",
+      "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
       "properties": {
-        "CnsmrSeqNo": {
+        "functionType": {
           "type": "string",
-          "description": "Payment request uuid generated in Platform System",
-          "maxLength": 32
-        },
-        "TransType": {
-          "type": "string",
-          "description": "Request type, one of:\n\n| Code | Description |\n|------|-------------|\n| Payment | Payment to the host |\n| Return | Payment Return |",
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Initial a transaction |\n| 2 | Cancel a transaction |",
+          "maxLength": 1,
+          "minLength": 1,
           "enum": [
-            "payment",
-            "return"
-          ],
-          "maxLength": 10
+            "1",
+            "2"
+          ]
         },
-        "OldFrontSeqNo": {
+        "transactionType": {
           "type": "string",
-          "description": "Receipt id",
+          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |",
+          "maxLength": 1,
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ],
+          "minLength": 1
+        },
+        "transactionId": {
+          "type": "string",
+          "maxLength": 52,
+          "description": "Transaction ID"
+        },
+        "oldTransactionId": {
+          "type": "string",
+          "description": "Orignal transactionId if the functionType=2",
           "maxLength": 52
         },
-        "TranWebMemberId": {
+        "tranWebMemberId": {
           "type": "string",
           "description": "Member id",
           "maxLength": 32
         },
-        "MemberFillAmt": {
+        "amount": {
           "type": "string",
           "description": "Payment amount",
           "maxLength": 20
         },
-        "Commission": {
+        "commission": {
           "type": "string",
           "description": "Commission fee",
           "maxLength": 20
         },
-        "PayChannelType": {
+        "payChannelType": {
           "type": "string",
-          "description": "Acquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+          "description": "Mandatory if transactionType = 1\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
           "enum": [
             "001",
             "002"
           ],
           "maxLength": 20
         },
-        "PayChannelAssignMerNo": {
+        "payChannelAssignMerNo": {
           "type": "string",
-          "description": "Merchant number assigned to platform in acquirer's system",
+          "description": "Mandatory if transactionType = 1\n\nMerchant number assigned to platform in acquirer's system",
           "maxLength": 50
         },
-        "PayChannelTranSeqNo": {
+        "payChannelTranSeqNo": {
           "type": "string",
-          "description": "Transaction number in acquirer's system",
+          "description": "Mandatory if transactionType = 1\n\nTransaction number in acquirer's system",
           "maxLength": 52
         },
-        "FrontSeqNo": {
-          "type": "string",
-          "description": "Lianlian Pay Bank Partner's receipt id",
-          "maxLength": 52
-        },
-        "TranDate": {
+        "tranDate": {
           "type": "string",
           "description": "Transaction date",
           "maxLength": 8
         },
-        "TranTime": {
+        "tranTime": {
           "type": "string",
           "description": "Transaction time",
           "maxLength": 20
         },
-        "Remark": {
+        "remark": {
           "type": "string",
           "description": "Remark",
           "maxLength": 300
         },
-        "Status": {
+        "status": {
           "type": "string",
           "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 5 | Pending |\n| 6 | in progress |",
           "enum": [
@@ -1322,7 +1267,7 @@
           ],
           "maxLength": 2
         },
-        "FailMsg": {
+        "failMsg": {
           "type": "string",
           "description": "Error message if applicable",
           "maxLength": 300
@@ -1334,132 +1279,124 @@
       "title": "Payout ",
       "description": "Data set defiend in Lianlian Pay bank partner's system to describe a pay from sub account to a beneficiary bank account.",
       "properties": {
-        "CnsmrSeqNo": {
+        "payoutId": {
           "type": "string",
-          "description": "Payout request uuid generated in Platform System"
+          "description": "Payout ID generated in Platform System",
+          "maxLength": 52
         },
         "TranWebMemberId": {
           "type": "string",
           "description": "Memeber id",
           "maxLength": 32
         },
-        "MemberAcctNo": {
+        "bankAccountNumber": {
           "type": "string",
           "description": "Beneficiary bank account number",
           "maxLength": 50
         },
-        "CashAmt": {
+         "bankName": {
+          "type": "string",
+          "maxLength": 52,
+          "description": "Bank name"
+        },
+        "amount": {
           "type": "string",
           "description": "Cash out amount",
           "maxLength": 20
         },
-        "FrontSeqNo": {
-          "type": "string",
-          "description": "Request receipt id",
-          "maxLength": 52
-        },
-        "TranDate": {
+        "payoutDate": {
           "type": "string",
           "description": "Transaction date",
           "maxLength": 8
         },
-        "TranTime": {
+        "payoutTime": {
           "type": "string",
           "description": "Transaction time",
           "maxLength": 20
         },
-        "Remark": {
+        "remark": {
           "type": "string",
           "description": "Remark",
           "maxLength": 300
         },
-        "Status": {
+        "status": {
           "type": "string",
-          "description": "Request status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 5 | Pending |\n| 6 | in progress |",
+          "description": "Request status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | Need confirm |\n| 5 | Pending |\n| 6 | In progress |",
           "enum": [
-            0,
-            1,
-            5,
-            6
+            "0",
+            "1",
+            "5",
+            "6",
+            "2"
           ],
           "maxLength": 2
         },
-        "FailMsg": {
+        "failMsg": {
           "type": "string",
           "description": "Error message if appicable ",
           "maxLength": 300
         }
       }
     },
-    "coupon": {
+    "topup": {
+      "title": "Topup",
       "type": "object",
-      "title": "Coupon",
-      "description": "Data set defined in Lianlian Pay bank partner's system to describe a coupon from platform to a host.",
+      "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
       "properties": {
-        "CnsmrSeqNo": {
+        "functionType": {
           "type": "string",
-          "description": "Payment request uuid generated in Platform System",
-          "maxLength": 32
-        },
-        "TransType": {
-          "type": "string",
-          "description": "Request type, one of:\n\n| Code | Description |\n|------|-------------|\n| Payment | Payment to the host |\n| Return | Payment Return |",
           "enum": [
-            "payment",
-            "return"
+            "1",
+            "2"
           ],
-          "maxLength": 10
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Initial a topup |\n| 2 | Cancel a topup |",
+          "maxLength": 1,
+          "minLength": 1
         },
-        "OldFrontSeqNo": {
+        "transactionType": {
           "type": "string",
-          "description": "Receipt id",
-          "maxLength": 52
-        },
-        "TranWebMemberId": {
-          "type": "string",
-          "description": "Member id",
-          "maxLength": 32
-        },
-        "MemberFillAmt": {
-          "type": "string",
-          "description": "Payment amount",
-          "maxLength": 20
-        },
-        "FrontSeqNo": {
-          "type": "string",
-          "description": "Lianlian Pay Bank Partner's receipt id",
-          "maxLength": 52
-        },
-        "TranDate": {
-          "type": "string",
-          "description": "Transaction date",
-          "maxLength": 8
-        },
-        "TranTime": {
-          "type": "string",
-          "description": "Transaction time",
-          "maxLength": 20
-        },
-        "Remark": {
-          "type": "string",
-          "description": "Remark",
-          "maxLength": 300
-        },
-        "Status": {
-          "type": "string",
-          "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 5 | Pending |\n| 6 | in progress |",
+          "minLength": 1,
+          "maxLength": 1,
           "enum": [
-            0,
-            1,
-            5,
-            6
+            "1"
           ],
-          "maxLength": 2
+          "description": "transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
         },
-        "FailMsg": {
+        "transactionId": {
           "type": "string",
-          "description": "Error message if applicable",
-          "maxLength": 300
+          "maxLength": 52,
+          "description": "Transaction ID"
+        },
+        "oldTransactionId": {
+          "type": "string",
+          "maxLength": 52,
+          "description": "Orignal transaction ID if funactionType=1"
+        },
+        "amount": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Top-up amount"
+        },
+        "remark": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Remark"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "0",
+            "1",
+            "5",
+            "6"
+          ],
+          "maxLength": 2,
+          "description": "Transaction status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 5 | Pending |\n| 6 | In progress |"
+        },
+        "failMsg": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Error message if applicable"
         }
       }
     }
