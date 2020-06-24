@@ -196,9 +196,6 @@
         },
         "summary": "Send transaction",
         "description": "Send a payment to the host after platform successfully received payment from customers. Commission amount plus MemberFillAmt should equal to the customer paid total amount. This method tracks actual payment to host and conmmission fees to platform of each order. \n\nReturn type is `transaction` object\n",
-        "tags": [
-          "Payment"
-        ],
         "consumes": [
           "application/json"
         ],
@@ -247,6 +244,9 @@
               ]
             }
           }
+        ],
+        "tags": [
+          "Transactons"
         ]
       },
       "parameters": [
@@ -304,16 +304,16 @@
         },
         "description": "Get a transaction request details by id.\n\nReturn type is `transaction`",
         "summary": "Get Transaction",
-        "tags": [
-          "Payment"
-        ],
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "operationId": "get-transaction"
+        "operationId": "get-transaction",
+        "tags": [
+          "Transactons"
+        ]
       },
       "parameters": [
         {
@@ -330,43 +330,41 @@
         }
       ]
     },
-    "/members/{TranWebMemberId}/coupons/{CnsmrSeqNo}": {
+    "/members/{tranWebMemberId}/topups/{transactionId}": {
       "get": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/coupon"
+              "$ref": "#/definitions/topup"
             }
           }
         },
-        "description": "Get a coupon request details by id.\n\nReturn type is `Payment`",
-        "summary": "Get Coupon",
-        "tags": [
-          "Coupon"
-        ],
+        "description": "Get a top-up transaction request details by transactionId.",
+        "summary": "Get top-up detail",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "operationId": "get-payment"
+        "operationId": "get-top-up",
+        "tags": [
+          "Top-up"
+        ]
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Member id from platform"
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true
         },
         {
-          "name": "CnsmrSeqNo",
-          "in": "path",
           "type": "string",
-          "required": true,
-          "description": "Payment request uuid generated in Platform System"
+          "name": "transactionId",
+          "in": "path",
+          "required": true
         }
       ]
     },
