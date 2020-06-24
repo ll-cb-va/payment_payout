@@ -971,7 +971,9 @@
       ],
       "get": {
         "summary": "Get bank account wait to be verified",
-        "tags": [],
+        "tags": [
+          "Member"
+        ],
         "responses": {
           "200": {
             "description": "OK",
