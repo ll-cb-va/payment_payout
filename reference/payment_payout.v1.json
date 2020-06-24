@@ -742,7 +742,7 @@
           }
         },
         "summary": "Create Payout",
-        "description": "Payout from sub account to beneficiary bank account. Payout amount should no larger than the sub account balance.\n\nReturn type is `Payout` object\n",
+        "description": "Payout from sub account to beneficiary bank account. Payout amount should no larger than the sub account balance.\n\nReturn type is `Payout` object.\n",
         "consumes": [
           "application/json"
         ],
