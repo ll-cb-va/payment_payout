@@ -254,7 +254,8 @@
           "name": "TranWebMemberId",
           "in": "path",
           "type": "string",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ]
     },
@@ -320,13 +321,15 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "transactionId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Transaction ID"
         }
       ]
     },
@@ -358,13 +361,15 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "transactionId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Transaction ID"
         }
       ]
     },
@@ -431,7 +436,8 @@
             "description": ""
           }
         ]
-      }
+      },
+      "parameters": []
     },
     "/members/{tranWebMemberId}": {
       "get": {
@@ -461,7 +467,8 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ],
       "delete": {
@@ -517,13 +524,15 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "bankAccountNumber",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Bank account number or card number"
         }
       ],
       "post": {
@@ -727,7 +736,8 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ]
     },
