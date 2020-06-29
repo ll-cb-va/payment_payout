@@ -818,7 +818,8 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ]
     },
@@ -855,13 +856,15 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "payoutId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Payout ID"
         }
       ]
     },
@@ -999,7 +1002,8 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ],
       "get": {
