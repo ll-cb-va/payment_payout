@@ -195,7 +195,7 @@
           }
         },
         "summary": "Send transaction",
-        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |\n\nReturn type is `transaction` object\n",
+        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transaction` object\n",
         "consumes": [
           "application/json"
         ],
@@ -212,7 +212,7 @@
               "properties": {
                 "transactionType": {
                   "type": "string",
-                  "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |",
+                  "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
                   "enum": [
                     "1",
                     "2",
@@ -306,7 +306,7 @@
           }
         },
         "summary": "Top-up",
-        "description": "top-up a specific account",
+        "description": "top-up a specific account\n\nThe function type is used to distinguish whether the transaction is initiated or returned. ",
         "consumes": [
           "application/json"
         ],
@@ -1351,7 +1351,7 @@
         },
         "transactionType": {
           "type": "string",
-          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |",
+          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
           "maxLength": 1,
           "enum": [
             "1",
