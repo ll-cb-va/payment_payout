@@ -1105,7 +1105,7 @@
           }
         },
         "operationId": "get-members-tranWebMemberId-bankaccounts",
-        "description": "Get bank account wait to be verified"
+        "description": "Get verifying bank account"
       }
     }
   },
