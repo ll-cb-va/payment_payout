@@ -184,18 +184,18 @@
         "operationId": "delete-webhook-registration"
       }
     },
-    "/members/{TranWebMemberId}/transactions": {
+    "/members/{tranWebMemberId}/transactions/{functionType}": {
       "post": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/payment"
+              "$ref": "#/definitions/transaction"
             }
           }
         },
         "summary": "Send transaction",
-        "description": "Send a payment to the host after platform successfully received payment from customers. Commission amount plus MemberFillAmt should equal to the customer paid total amount. This method tracks actual payment to host and conmmission fees to platform of each order. \n\nReturn type is `transaction` object\n",
+        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transaction` object\n",
         "consumes": [
           "application/json"
         ],
@@ -210,39 +210,68 @@
             "schema": {
               "type": "object",
               "properties": {
-                "CnsmrSeqNo": {
+                "transactionType": {
                   "type": "string",
-                  "description": "Unique serial number from platform"
+                  "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+                  "enum": [
+                    "1",
+                    "2",
+                    "3"
+                  ],
+                  "maxLength": 2
                 },
-                "MemberFillAmt": {
-                  "type": "string"
-                },
-                "Commission": {
-                  "type": "string"
-                },
-                "PayChannelType": {
-                  "type": "string"
-                },
-                "PayChannelAssignMerNo ": {
-                  "type": "string"
-                },
-                "PayChannelTranSeqNo": {
-                  "type": "string"
-                },
-                "Remark": {
+                "transactionId": {
                   "type": "string",
-                  "description": "Remark"
+                  "description": "Transaction ID",
+                  "maxLength": 52
+                },
+                "oldTransactionId": {
+                  "type": "string",
+                  "description": "Original transaction ID, mandatory if the functionType = return",
+                  "maxLength": 52
+                },
+                "payChannelType": {
+                  "type": "string",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+                  "enum": [
+                    "0001",
+                    "0002"
+                  ],
+                  "maxLength": 20
+                },
+                "payChannelAssignMerNo": {
+                  "type": "string",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
+                  "maxLength": 50
+                },
+                "payChannelTranSeqNo": {
+                  "type": "string",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
+                  "maxLength": 52
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "Tranaction amount",
+                  "maxLength": 20
+                },
+                "commission": {
+                  "type": "string",
+                  "description": "Commission fee",
+                  "maxLength": 20
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Remark",
+                  "maxLength": 300
                 }
               },
               "required": [
-                "CnsmrSeqNo",
-                "MemberFillAmt",
-                "Commission",
-                "PayChannelType",
-                "PayChannelAssignMerNo ",
-                "PayChannelTranSeqNo"
+                "transactionType",
+                "transactionId",
+                "amount"
               ]
-            }
+            },
+            "description": ""
           }
         ],
         "tags": [
@@ -251,25 +280,33 @@
       },
       "parameters": [
         {
-          "name": "TranWebMemberId",
-          "in": "path",
           "type": "string",
-          "required": true
+          "name": "functionType",
+          "in": "path",
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
+        },
+        {
+          "type": "string",
+          "name": "tranWebMemberId",
+          "in": "path",
+          "required": true,
+          "description": "Member ID in platform's system"
         }
       ]
     },
-    "/topup": {
+    "/topup/{functionType}": {
       "post": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/coupon"
+              "$ref": "#/definitions/topup"
             }
           }
         },
         "summary": "Top-up",
-        "description": "top-up a specific account",
+        "description": "top-up a specific account\n\nThe function type is used to distinguish whether the transaction is initiated or returned. ",
         "consumes": [
           "application/json"
         ],
@@ -282,27 +319,70 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "type": "object"
-            }
+              "type": "object",
+              "properties": {
+                "transactionType": {
+                  "type": "string",
+                  "enum": [
+                    "1"
+                  ],
+                  "maxLength": 2,
+                  "description": "transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
+                },
+                "transactionId": {
+                  "type": "string",
+                  "maxLength": 52,
+                  "description": "Transaction ID generated in platform's system"
+                },
+                "oldTransactionId": {
+                  "type": "string",
+                  "maxLength": 52,
+                  "description": "Original transaction ID, mandatory if funactionType = return"
+                },
+                "amount": {
+                  "type": "string",
+                  "maxLength": 20,
+                  "description": "Top-up amount"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Remark"
+                }
+              },
+              "required": [
+                "transactionType",
+                "transactionId",
+                "amount"
+              ]
+            },
+            "description": ""
           }
         ],
         "tags": [
           "Top-up"
         ]
       },
-      "parameters": []
+      "parameters": [
+        {
+          "type": "string",
+          "name": "functionType",
+          "in": "path",
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a top-up |\n| return | Return a top-up |"
+        }
+      ]
     },
-    "/members/{tranWebMemberId}/transactions/{transactionId}": {
+    "/members/{tranWebMemberId}/transactions/{functionType}/{transactionId}": {
       "get": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/payment"
+              "$ref": "#/definitions/transaction"
             }
           }
         },
-        "description": "Get a transaction request details by id.\n\nReturn type is `transaction`",
+        "description": "Get a transaction request details by id.\n\nReturn type is `transaction`object",
         "summary": "Get Transaction",
         "consumes": [
           "application/json"
@@ -320,17 +400,26 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "transactionId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Transaction ID"
+        },
+        {
+          "type": "string",
+          "name": "functionType",
+          "in": "path",
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
         }
       ]
     },
-    "/members/{tranWebMemberId}/topups/{transactionId}": {
+    "/topups/{functionType}/{transactionId}": {
       "get": {
         "responses": {
           "200": {
@@ -356,15 +445,17 @@
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "functionType",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a transaction |\n| return | Return a transaction |"
         },
         {
           "type": "string",
           "name": "transactionId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Transaction ID generated in platform's system"
         }
       ]
     },
@@ -431,7 +522,8 @@
             "description": ""
           }
         ]
-      }
+      },
+      "parameters": []
     },
     "/members/{tranWebMemberId}": {
       "get": {
@@ -461,7 +553,8 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ],
       "delete": {
@@ -517,13 +610,15 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "bankAccountNumber",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Bank account number or card number"
         }
       ],
       "post": {
@@ -540,7 +635,7 @@
         "tags": [
           "Member"
         ],
-        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nPrivate owned beneficiary account is verify by SMS text and entity owned beneficiary account is verify by random amount deposited into beneficiary account.",
+        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nTwo types of verification refer to different verification informations\n\n| Verification Type | Verification Information |\n|------|-------------|\n| UnionPay verification | SMS text |\n| Small amount verification | Random amount deposited in to beneficiary account |\n",
         "parameters": [
           {
             "in": "body",
@@ -623,12 +718,12 @@
               "properties": {
                 "needVerify": {
                   "type": "string",
+                  "description": "Whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | need to verify |\n| 1 | no need to verify |\n\n\n",
                   "enum": [
                     "0",
                     "1"
                   ],
-                  "maxLength": 2,
-                  "description": "Whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | need to verify |\n| 1 | no need to verify |\n\n\n"
+                  "maxLength": 2
                 }
               },
               "required": [
@@ -648,7 +743,7 @@
         "produces": [
           "application/json"
         ],
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nLianlian Pay bank partner's offers two methods of card verification\n\n| Verification Type | Capability|\n|------|-------------|\n| UnionPay verification | Only available for individual bank account|\n| Small amount verification | All type of bank account |",
         "operationId": "add-bank-account",
         "parameters": [
           {
@@ -659,43 +754,43 @@
               "properties": {
                 "verifyType": {
                   "type": "string",
-                  "maxLength": 1,
                   "enum": [
                     "1",
                     "2"
                   ],
+                  "maxLength": 2,
                   "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
                 },
                 "memberIdType": {
                   "type": "string",
-                  "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
                   "enum": [
                     "1",
                     "4",
                     "52",
                     "73"
                   ],
-                  "maxLength": 2
+                  "maxLength": 5,
+                  "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |"
                 },
                 "memberName": {
                   "type": "string",
-                  "description": "Member name",
-                  "maxLength": 150
+                  "maxLength": 150,
+                  "description": "Member name"
                 },
                 "memberIdNumber": {
                   "type": "string",
-                  "description": "Member ID number",
-                  "maxLength": 32
+                  "maxLength": 32,
+                  "description": "Member ID number"
                 },
                 "bankAccountNumber": {
                   "type": "string",
-                  "description": "Bank account number or card number",
-                  "maxLength": 50
+                  "maxLength": 50,
+                  "description": "Bank account number"
                 },
                 "bankName": {
                   "type": "string",
-                  "description": "Bank name",
-                  "maxLength": 80
+                  "maxLength": 80,
+                  "description": "Bank name"
                 },
                 "bankCnapsCode": {
                   "type": "string",
@@ -715,10 +810,10 @@
                 "memberIdNumber",
                 "bankAccountNumber",
                 "bankName",
-                "bankCnapsCode",
                 "mobile"
               ]
-            }
+            },
+            "description": ""
           }
         ]
       },
@@ -727,9 +822,29 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
-      ]
+      ],
+      "get": {
+        "summary": "Get verifying bank account",
+        "operationId": "get-members-tranWebMemberId-bankaccounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/bank-account"
+              }
+            }
+          }
+        },
+        "description": "Get bank account detail that wait to be verified with the method of small amount verification",
+        "tags": [
+          "Member"
+        ]
+      }
     },
     "/members/{tranWebMemberId}/payouts": {
       "post": {
@@ -808,7 +923,8 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ]
     },
@@ -845,13 +961,15 @@
           "type": "string",
           "name": "tranWebMemberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "payoutId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Payout ID"
         }
       ]
     },
@@ -982,32 +1100,6 @@
           "description": "Event id in Lianlian Pay's system"
         }
       ]
-    },
-    "/members/{tranWebMemberId}/bankaccounts}": {
-      "parameters": [
-        {
-          "type": "string",
-          "name": "tranWebMemberId",
-          "in": "path",
-          "required": true
-        }
-      ],
-      "get": {
-        "summary": "Get bank account wait to be verified",
-        "tags": [
-          "Member"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/bank-account"
-            }
-          }
-        },
-        "operationId": "get-members-tranWebMemberId-bankaccounts",
-        "description": "Get bank account wait to be verified"
-      }
     }
   },
   "definitions": {
@@ -1050,6 +1142,9 @@
         "isEnable",
         "createTime",
         "topics"
+      ],
+      "x-tags": [
+        "Models"
       ]
     },
     "event": {
@@ -1063,7 +1158,7 @@
         },
         "topic": {
           "type": "array",
-          "description": "Event topics defined in Lianlian Pay's system.\n| Topic | Description |\n|-------|-------------|\n| member.payout.success | Payout success. |\n| member.payout.failed | Payout failed. |\n| reconciliation.payment.created | Payment reconciliation documents created. |\n| reconciliation.coupon.created | Coupon reconciliation documents created. |\n| reconciliation.payout.created | Payout reconciliation documents created. |\n| reconciliation.balance.created | End-of-day member account balance reconciliation documents created. |",
+          "description": "Event topics defined in Lianlian Pay's system.\n\n| Topic | Description |\n|------|-------------|\n| member.payout.success | Payout success. |\n| member.payout.failed | Payout failed. |\n| reconciliation.transaction.created |Transaction reconciliation documents created.|\n| reconciliation.topup.created | Topup reconciliation documents created. |\n| reconciliation.payout.created | Payout reconciliation documents created. |\n| reconciliation.balance.created | End-of-day member account balance reconciliation documents created. |",
           "items": {
             "type": "string"
           }
@@ -1082,12 +1177,15 @@
         "topic",
         "createTime",
         "data"
+      ],
+      "x-tags": [
+        "Models"
       ]
     },
     "report": {
       "type": "object",
       "title": "Report",
-      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.payment.created`, `reconciliation.payout.created`, `reconciliation.memberEODBalance.created`, 'reconciliation.coupon.created' topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| PAYMENT_YYYYMMDD.gz | Payment request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&Commission&TranDate&TranTime |\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&CashAmt&TranDate&TranTime |\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file, header is TranWebMemberId&Amt |\n| COUPON_YYYYMMDD.gz | Coupon request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&TranDate&TranTime |",
+      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.balance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Transaction request reconcilation file\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file|\n| TOPUP_YYYYMMDD.gz | Top-up request reconcilation file|",
       "required": [
         "id",
         "name",
@@ -1111,7 +1209,10 @@
           "type": "string",
           "description": "Report create time"
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "bank-account": {
       "type": "object",
@@ -1169,7 +1270,10 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "member": {
       "type": "object",
@@ -1203,7 +1307,7 @@
         },
         "cashAmt": {
           "type": "string",
-          "description": "Payout balance, less than or equal to `AcctAvailBal`",
+          "description": "Account balances that can payout, less than or equal to `acctAvailBal`",
           "maxLength": 20
         },
         "maintenanceDate": {
@@ -1223,26 +1327,31 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "transaction": {
       "type": "object",
       "title": "Transaction",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "functionType": {
           "type": "string",
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Initial a transaction |\n| 2 | Cancel a transaction |",
-          "maxLength": 1,
-          "minLength": 1,
+          "description": "function type, one of: \n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |",
+          "maxLength": 2,
           "enum": [
-            "1",
-            "2"
+            "initial",
+            "cancel"
           ]
         },
         "transactionType": {
           "type": "string",
-          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |",
+          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
           "maxLength": 1,
           "enum": [
             "1",
@@ -1258,17 +1367,17 @@
         },
         "oldTransactionId": {
           "type": "string",
-          "description": "Orignal transactionId if the functionType=2",
+          "description": "Original transactionId, mandatory if the functionType = return",
           "maxLength": 52
         },
         "tranWebMemberId": {
           "type": "string",
-          "description": "Member id",
+          "description": "Member ID from platform",
           "maxLength": 32
         },
         "amount": {
           "type": "string",
-          "description": "Payment amount",
+          "description": "Transaction amount",
           "maxLength": 20
         },
         "commission": {
@@ -1278,21 +1387,21 @@
         },
         "payChannelType": {
           "type": "string",
-          "description": "Mandatory if transactionType = 1\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+          "maxLength": 20,
           "enum": [
-            "001",
-            "002"
-          ],
-          "maxLength": 20
+            "0001",
+            "0002"
+          ]
         },
         "payChannelAssignMerNo": {
           "type": "string",
-          "description": "Mandatory if transactionType = 1\n\nMerchant number assigned to platform in acquirer's system",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
           "maxLength": 50
         },
         "payChannelTranSeqNo": {
           "type": "string",
-          "description": "Mandatory if transactionType = 1\n\nTransaction number in acquirer's system",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
           "maxLength": 52
         },
         "tranDate": {
@@ -1312,12 +1421,11 @@
         },
         "status": {
           "type": "string",
-          "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 5 | Pending |\n| 6 | in progress |",
+          "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |",
           "enum": [
-            0,
-            1,
-            5,
-            6
+            "0",
+            "1",
+            "2"
           ],
           "maxLength": 2
         },
@@ -1330,15 +1438,18 @@
     },
     "payout": {
       "type": "object",
-      "title": "Payout ",
+      "title": "Payout",
       "description": "Data set defiend in Lianlian Pay bank partner's system to describe a pay from sub account to a beneficiary bank account.",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "payoutId": {
           "type": "string",
           "description": "Payout ID generated in Platform System",
           "maxLength": 52
         },
-        "TranWebMemberId": {
+        "tranWebMemberId": {
           "type": "string",
           "description": "Memeber id",
           "maxLength": 32
@@ -1375,12 +1486,10 @@
         },
         "status": {
           "type": "string",
-          "description": "Request status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | Need confirm |\n| 5 | Pending |\n| 6 | In progress |",
+          "description": "Request status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |",
           "enum": [
             "0",
             "1",
-            "5",
-            "6",
             "2"
           ],
           "maxLength": 2
@@ -1396,16 +1505,18 @@
       "title": "Topup",
       "type": "object",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "functionType": {
           "type": "string",
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a topup |\n| return | Return a topup |",
           "enum": [
-            "1",
-            "2"
+            "initial",
+            "cancel"
           ],
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Initial a topup |\n| 2 | Cancel a topup |",
-          "maxLength": 1,
-          "minLength": 1
+          "maxLength": 10
         },
         "transactionType": {
           "type": "string",
@@ -1424,7 +1535,7 @@
         "oldTransactionId": {
           "type": "string",
           "maxLength": 52,
-          "description": "Orignal transaction ID if funactionType=1"
+          "description": "Original transaction ID, mandatory if funactionType= return"
         },
         "amount": {
           "type": "string",
@@ -1441,11 +1552,10 @@
           "enum": [
             "0",
             "1",
-            "5",
-            "6"
+            "2"
           ],
           "maxLength": 2,
-          "description": "Transaction status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 5 | Pending |\n| 6 | In progress |"
+          "description": "Transaction status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |"
         },
         "failMsg": {
           "type": "string",
