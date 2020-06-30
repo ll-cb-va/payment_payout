@@ -195,7 +195,7 @@
           }
         },
         "summary": "Send transaction",
-        "description": "Send a payment to the host after platform successfully received payment from customers. Commission amount plus MemberFillAmt should equal to the customer paid total amount. This method tracks actual payment to host and conmmission fees to platform of each order. \n\nReturn type is `transaction` object\n",
+        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |\n\nReturn type is `transaction` object\n",
         "consumes": [
           "application/json"
         ],
@@ -718,12 +718,12 @@
               "properties": {
                 "needVerify": {
                   "type": "string",
+                  "description": "Whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | need to verify |\n| 1 | no need to verify |\n\n\n",
                   "enum": [
                     "0",
                     "1"
                   ],
-                  "maxLength": 2,
-                  "description": "Whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | need to verify |\n| 1 | no need to verify |\n\n\n"
+                  "maxLength": 2
                 }
               },
               "required": [
@@ -840,7 +840,7 @@
             }
           }
         },
-        "description": "Get bank account detail that wait to be verified with the method of samll amount verification",
+        "description": "Get bank account detail that wait to be verified with the method of small amount verification",
         "tags": [
           "Member"
         ]
@@ -1100,17 +1100,6 @@
           "description": "Event id in Lianlian Pay's system"
         }
       ]
-    },
-    "/members/{tranWebMemberId}/bankaccounts}": {
-      "parameters": [
-        {
-          "type": "string",
-          "name": "tranWebMemberId",
-          "in": "path",
-          "required": true,
-          "description": "Member ID from platform"
-        }
-      ]
     }
   },
   "definitions": {
@@ -1153,6 +1142,9 @@
         "isEnable",
         "createTime",
         "topics"
+      ],
+      "x-tags": [
+        "Models"
       ]
     },
     "event": {
@@ -1185,6 +1177,9 @@
         "topic",
         "createTime",
         "data"
+      ],
+      "x-tags": [
+        "Models"
       ]
     },
     "report": {
@@ -1214,7 +1209,10 @@
           "type": "string",
           "description": "Report create time"
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "bank-account": {
       "type": "object",
@@ -1272,7 +1270,10 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "member": {
       "type": "object",
@@ -1326,12 +1327,18 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "transaction": {
       "type": "object",
       "title": "Transaction",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "functionType": {
           "type": "string",
@@ -1416,10 +1423,9 @@
           "type": "string",
           "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |",
           "enum": [
-            0,
-            1,
-            5,
-            6
+            "0",
+            "1",
+            "2"
           ],
           "maxLength": 2
         },
@@ -1434,6 +1440,9 @@
       "type": "object",
       "title": "Payout",
       "description": "Data set defiend in Lianlian Pay bank partner's system to describe a pay from sub account to a beneficiary bank account.",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "payoutId": {
           "type": "string",
@@ -1481,8 +1490,6 @@
           "enum": [
             "0",
             "1",
-            "5",
-            "6",
             "2"
           ],
           "maxLength": 2
@@ -1498,6 +1505,9 @@
       "title": "Topup",
       "type": "object",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "functionType": {
           "type": "string",
@@ -1542,8 +1552,7 @@
           "enum": [
             "0",
             "1",
-            "5",
-            "6"
+            "2"
           ],
           "maxLength": 2,
           "description": "Transaction status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |"
