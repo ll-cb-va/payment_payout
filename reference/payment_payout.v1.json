@@ -195,7 +195,7 @@
           }
         },
         "summary": "Send transaction",
-        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transaction` object\n",
+        "description": "Send a payment to the host after platform successfully received payment from customers. Commission amount plus MemberFillAmt should equal to the customer paid total amount. This method tracks actual payment to host and conmmission fees to platform of each order. \n\nReturn type is `transaction` object\n",
         "consumes": [
           "application/json"
         ],
@@ -212,7 +212,7 @@
               "properties": {
                 "transactionType": {
                   "type": "string",
-                  "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+                  "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |",
                   "enum": [
                     "1",
                     "2",
@@ -306,7 +306,7 @@
           }
         },
         "summary": "Top-up",
-        "description": "top-up a specific account\n\nThe function type is used to distinguish whether the transaction is initiated or returned. ",
+        "description": "top-up a specific account",
         "consumes": [
           "application/json"
         ],
@@ -581,17 +581,8 @@
         "operationId": "delete-member"
       }
     },
-    "/members/{tranWebMemberId}/bankaccounts/{bankAccountNumber}": {
+    "/members/bankaccounts": {
       "delete": {
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          }
-        },
         "summary": "Remove Bank Account",
         "description": "Remove a beneficiary bank account in Lianlian Pay bank partner's system for a host.\n",
         "consumes": [
@@ -603,132 +594,43 @@
         "produces": [
           "application/json"
         ],
-        "operationId": "remove-bank-account"
-      },
-      "parameters": [
-        {
-          "type": "string",
-          "name": "tranWebMemberId",
-          "in": "path",
-          "required": true,
-          "description": "Member ID from platform"
-        },
-        {
-          "type": "string",
-          "name": "bankAccountNumber",
-          "in": "path",
-          "required": true,
-          "description": "Bank account number or card number"
-        }
-      ],
-      "post": {
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object"
-            }
-          }
-        },
-        "summary": "Verify Bank Account",
-        "operationId": "verify-bank-account",
-        "tags": [
-          "Member"
-        ],
-        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nTwo types of verification refer to different verification informations\n\n| Verification Type | Verification Information |\n|------|-------------|\n| UnionPay verification | SMS text |\n| Small amount verification | Random amount deposited in to beneficiary account |\n",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "verifyType": {
-                  "type": "string",
-                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
-                  "enum": [
-                    "1",
-                    "2"
-                  ],
-                  "maxLength": 2
-                },
-                "verifyInfo": {
-                  "type": "string",
-                  "maxLength": 10,
-                  "description": "Input SMS code if verifyType=1\nInput amount of receiving fund if verifyType=2"
-                }
-              },
-              "required": [
-                "verifyType",
-                "verifyInfo"
-              ]
-            }
-          }
-        ]
-      },
-      "get": {
-        "summary": "Get fund transfer status",
-        "operationId": "get-fund-transfer-status",
+        "operationId": "remove-bank-account",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
               "type": "object",
-              "properties": {
-                "status": {
-                  "type": "string",
-                  "maxLength": 2,
-                  "enum": [
-                    "0",
-                    "1",
-                    "2"
-                  ],
-                  "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | Pending |"
-                },
-                "failMsg": {
-                  "type": "string",
-                  "maxLength": 300,
-                  "description": "Error message if applicable"
-                }
-              },
-              "required": [
-                "status"
-              ]
+              "properties": {}
             }
           }
-        },
-        "description": "get the transfer status for small amount verification",
+        }
+      },
+      "parameters": [],
+      "post": {
+        "summary": "",
+        "operationId": "",
+        "tags": [
+          "Member"
+        ],
+        "description": "",
+        "parameters": []
+      },
+      "get": {
+        "summary": "",
+        "operationId": "",
+        "description": "",
         "tags": [
           "Member"
         ]
       }
     },
-    "/members/{tranWebMemberId}/bankaccounts": {
+    "/members/{tranWebMemberId}/addbankaccounts": {
       "post": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "type": "object",
-              "enum": [
-                "0",
-                "1"
-              ],
-              "description": "whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Need toverify |\n| 1 | No need to verify |\n\n",
-              "properties": {
-                "needVerify": {
-                  "type": "string",
-                  "description": "Whether the bank account need to verify, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | need to verify |\n| 1 | no need to verify |\n\n\n",
-                  "enum": [
-                    "0",
-                    "1"
-                  ],
-                  "maxLength": 2
-                }
-              },
-              "required": [
-                "needVerify"
-              ]
+              "$ref": "#/definitions/add-bank-account-request"
             },
             "headers": {}
           }
@@ -743,7 +645,7 @@
         "produces": [
           "application/json"
         ],
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nLianlian Pay bank partner's offers two methods of card verification\n\n| Verification Type | Capability|\n|------|-------------|\n| UnionPay verification | Only available for individual bank account|\n| Small amount verification | All type of bank account |",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.",
         "operationId": "add-bank-account",
         "parameters": [
           {
@@ -838,11 +740,75 @@
                 "$ref": "#/definitions/bank-account"
               }
             }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/add-bank-account-request"
+            }
           }
         },
-        "description": "Get bank account detail that wait to be verified with the method of small amount verification",
+        "description": "Get bank account detail that wait to be verified with the method of samll amount verification",
         "tags": [
           "Member"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyType": {
+                  "type": "string"
+                },
+                "": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "Verify Bank Account",
+        "operationId": "put-members-tranWebMemberId-addbankaccounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/add-bank-account-request"
+            }
+          }
+        },
+        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nPrivate owned beneficiary account is verify by SMS text and entity owned beneficiary account is verify by random amount deposited into beneficiary account.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyType": {
+                  "type": "string",
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
+                  "maxLength": 2,
+                  "enum": [
+                    "1",
+                    "2"
+                  ]
+                },
+                "verifyInfo": {
+                  "type": "string",
+                  "description": "Input SMS code if verifyType=1\nInput amount of receiving fund if verifyType=2",
+                  "maxLength": 10
+                }
+              },
+              "required": [
+                "verifyType",
+                "verifyInfo"
+              ]
+            }
+          }
         ]
       }
     },
@@ -1100,6 +1066,9 @@
           "description": "Event id in Lianlian Pay's system"
         }
       ]
+    },
+    "": {
+      "parameters": []
     }
   },
   "definitions": {
@@ -1142,9 +1111,6 @@
         "isEnable",
         "createTime",
         "topics"
-      ],
-      "x-tags": [
-        "Models"
       ]
     },
     "event": {
@@ -1177,15 +1143,12 @@
         "topic",
         "createTime",
         "data"
-      ],
-      "x-tags": [
-        "Models"
       ]
     },
     "report": {
       "type": "object",
       "title": "Report",
-      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.balance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Transaction request reconcilation file\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file|\n| TOPUP_YYYYMMDD.gz | Top-up request reconcilation file|",
+      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.memberEODBalance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Payment request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&Commission&TranDate&TranTime |\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&CashAmt&TranDate&TranTime |\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file, header is TranWebMemberId&Amt |\n| TOPUP_YYYYMMDD.gz | Coupon request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&TranDate&TranTime |",
       "required": [
         "id",
         "name",
@@ -1209,10 +1172,7 @@
           "type": "string",
           "description": "Report create time"
         }
-      },
-      "x-tags": [
-        "Models"
-      ]
+      }
     },
     "bank-account": {
       "type": "object",
@@ -1270,10 +1230,7 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      },
-      "x-tags": [
-        "Models"
-      ]
+      }
     },
     "member": {
       "type": "object",
@@ -1327,18 +1284,12 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      },
-      "x-tags": [
-        "Models"
-      ]
+      }
     },
     "transaction": {
       "type": "object",
       "title": "Transaction",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
-      "x-tags": [
-        "Models"
-      ],
       "properties": {
         "functionType": {
           "type": "string",
@@ -1351,7 +1302,7 @@
         },
         "transactionType": {
           "type": "string",
-          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Member account credit for fund in transit |\n| 2 | Member account credit for marketing fund |\n| 3 | Member account debit for platform fee |",
           "maxLength": 1,
           "enum": [
             "1",
@@ -1423,9 +1374,10 @@
           "type": "string",
           "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |",
           "enum": [
-            "0",
-            "1",
-            "2"
+            0,
+            1,
+            5,
+            6
           ],
           "maxLength": 2
         },
@@ -1438,18 +1390,15 @@
     },
     "payout": {
       "type": "object",
-      "title": "Payout",
+      "title": "Payout ",
       "description": "Data set defiend in Lianlian Pay bank partner's system to describe a pay from sub account to a beneficiary bank account.",
-      "x-tags": [
-        "Models"
-      ],
       "properties": {
         "payoutId": {
           "type": "string",
           "description": "Payout ID generated in Platform System",
           "maxLength": 52
         },
-        "tranWebMemberId": {
+        "TranWebMemberId": {
           "type": "string",
           "description": "Memeber id",
           "maxLength": 32
@@ -1490,6 +1439,8 @@
           "enum": [
             "0",
             "1",
+            "5",
+            "6",
             "2"
           ],
           "maxLength": 2
@@ -1505,9 +1456,6 @@
       "title": "Topup",
       "type": "object",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
-      "x-tags": [
-        "Models"
-      ],
       "properties": {
         "functionType": {
           "type": "string",
@@ -1552,7 +1500,8 @@
           "enum": [
             "0",
             "1",
-            "2"
+            "5",
+            "6"
           ],
           "maxLength": 2,
           "description": "Transaction status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |"
@@ -1561,6 +1510,76 @@
           "type": "string",
           "maxLength": 300,
           "description": "Error message if applicable"
+        }
+      }
+    },
+    "add-bank-account-request": {
+      "title": "add-bank-account-request",
+      "type": "object",
+      "description": "add bank account request object defined in Lianlian Pay bank partner's system.",
+      "properties": {
+        "verifyStatus": {
+          "type": "string",
+          "description": "Whether the bank account has been verified",
+          "enum": [
+            "Y",
+            "N"
+          ],
+          "maxLength": 2
+        },
+        "isFunded": {
+          "type": "string",
+          "description": "whether the small amount fund has been transfered",
+          "enum": [
+            "Y",
+            "N"
+          ],
+          "maxLength": 2
+        },
+        "verifyType": {
+          "type": "string",
+          "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
+          "enum": [
+            "1",
+            "2"
+          ],
+          "maxLength": 2
+        },
+        "memberIdType": {
+          "type": "string",
+          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
+          "maxLength": 5,
+          "enum": [
+            "1",
+            "4",
+            "52",
+            "73"
+          ]
+        },
+        "memberIdNumber": {
+          "type": "string",
+          "description": "Member ID number",
+          "maxLength": 32
+        },
+        "memberName": {
+          "type": "string",
+          "description": "Member name",
+          "maxLength": 150
+        },
+        "bankAccountNumber": {
+          "type": "string",
+          "description": "Bank account number or card number",
+          "maxLength": 80
+        },
+        "bankCnapsCode": {
+          "type": "string",
+          "description": "Bank code defined in China National Advanced Payment System",
+          "maxLength": 30
+        },
+        "mobile": {
+          "type": "string",
+          "description": "Mobile number registered in bank",
+          "maxLength": 30
         }
       }
     }
