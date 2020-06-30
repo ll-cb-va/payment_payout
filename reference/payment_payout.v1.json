@@ -824,7 +824,23 @@
           "required": true,
           "description": "Member ID from platform"
         }
-      ]
+      ],
+      "get": {
+        "summary": "Get verifying bank account",
+        "operationId": "get-members-tranWebMemberId-bankaccounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/bank-account"
+              }
+            }
+          }
+        },
+        "description": "Get bank account detail that wait to be verified with the method of samll amount verification"
+      }
     },
     "/members/{tranWebMemberId}/payouts": {
       "post": {
@@ -1090,23 +1106,7 @@
           "required": true,
           "description": "Member ID from platform"
         }
-      ],
-      "get": {
-        "summary": "Get bank account wait to be verified",
-        "tags": [
-          "Member"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/bank-account"
-            }
-          }
-        },
-        "operationId": "get-members-tranWebMemberId-bankaccounts",
-        "description": "Get verifying bank account"
-      }
+      ]
     }
   },
   "definitions": {
