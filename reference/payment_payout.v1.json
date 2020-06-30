@@ -747,7 +747,7 @@
             }
           }
         },
-        "description": "Get bank account detail that wait to be verified with the method of samll amount verification",
+        "description": "Get bank account detail that wait to be verified with the method of samll amount verification...  ",
         "tags": [
           "Member"
         ],
