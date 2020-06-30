@@ -1149,9 +1149,6 @@
         "isEnable",
         "createTime",
         "topics"
-      ],
-      "x-tags": [
-        "Webhook"
       ]
     },
     "event": {
@@ -1184,9 +1181,6 @@
         "topic",
         "createTime",
         "data"
-      ],
-      "x-tags": [
-        "Event"
       ]
     },
     "report": {
@@ -1216,10 +1210,7 @@
           "type": "string",
           "description": "Report create time"
         }
-      },
-      "x-tags": [
-        "Report"
-      ]
+      }
     },
     "bank-account": {
       "type": "object",
@@ -1277,10 +1268,7 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      },
-      "x-tags": [
-        "Member"
-      ]
+      }
     },
     "member": {
       "type": "object",
@@ -1334,18 +1322,12 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      },
-      "x-tags": [
-        "Member"
-      ]
+      }
     },
     "transaction": {
       "type": "object",
       "title": "Transaction",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
-      "x-tags": [
-        "Transactons"
-      ],
       "properties": {
         "functionType": {
           "type": "string",
@@ -1506,18 +1488,12 @@
           "description": "Error message if appicable ",
           "maxLength": 300
         }
-      },
-      "x-tags": [
-        "Payout"
-      ]
+      }
     },
     "topup": {
       "title": "Topup",
       "type": "object",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
-      "x-tags": [
-        "Top-up"
-      ],
       "properties": {
         "functionType": {
           "type": "string",
