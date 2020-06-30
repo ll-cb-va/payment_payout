@@ -635,7 +635,7 @@
         "tags": [
           "Member"
         ],
-        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nPrivate owned beneficiary account is verify by SMS text and entity owned beneficiary account is verify by random amount deposited into beneficiary account.",
+        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nTwo types of verification refer to different verification informations\n\n| Verification Type | Verification Information |\n|------|-------------|\n| UnionPay verification | SMS text |\n| Small amount verification | Random amount deposited in to beneficiary account |\n",
         "parameters": [
           {
             "in": "body",
@@ -743,7 +743,7 @@
         "produces": [
           "application/json"
         ],
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nLianlian Pay bank partner's offers two methods of card verification\n\n| Verification Type | Capability|\n|------|-------------|\n| UnionPay verification | Only available for individual bank account|\n| Small amount verification | All type of bank account |",
         "operationId": "add-bank-account",
         "parameters": [
           {
