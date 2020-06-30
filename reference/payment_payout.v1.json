@@ -737,7 +737,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/bank-account"
+                "$ref": "#/definitions/add-bank-account-request"
               }
             }
           },
@@ -751,23 +751,7 @@
         "tags": [
           "Member"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "verifyType": {
-                  "type": "string"
-                },
-                "": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ]
+        "parameters": []
       },
       "put": {
         "summary": "Verify Bank Account",
