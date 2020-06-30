@@ -1190,7 +1190,7 @@
     "report": {
       "type": "object",
       "title": "Report",
-      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.memberEODBalance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Payment request reconcilation file, header is functionType&transactionType&transactionId&oldTransactionId&tranWebMemberId&amount&commission&tranDate&tranTime&remark|\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&CashAmt&TranDate&TranTime |\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file, header is TranWebMemberId&Amt |\n| TOPUP_YYYYMMDD.gz | Coupon request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&TranDate&TranTime |",
+      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.balance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Transaction request reconcilation file\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file|\n| TOPUP_YYYYMMDD.gz | Top-up request reconcilation file|",
       "required": [
         "id",
         "name",
@@ -1432,7 +1432,7 @@
     },
     "payout": {
       "type": "object",
-      "title": "Payout ",
+      "title": "Payout",
       "description": "Data set defiend in Lianlian Pay bank partner's system to describe a pay from sub account to a beneficiary bank account.",
       "properties": {
         "payoutId": {
@@ -1440,7 +1440,7 @@
           "description": "Payout ID generated in Platform System",
           "maxLength": 52
         },
-        "TranWebMemberId": {
+        "tranWebMemberId": {
           "type": "string",
           "description": "Memeber id",
           "maxLength": 32
