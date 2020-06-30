@@ -227,7 +227,7 @@
                 },
                 "oldTransactionId": {
                   "type": "string",
-                  "description": "Orignal transactionId, mandatory if the functionType=2\n",
+                  "description": "Orignal transactionId, mandatory if the functionType = cancel",
                   "maxLength": 52
                 },
                 "payChannelType": {
@@ -1302,7 +1302,7 @@
         },
         "cashAmt": {
           "type": "string",
-          "description": "Payout balance, less than or equal to `AcctAvailBal`",
+          "description": "Account balances that can payout, less than or equal to `AcctAvailBal`",
           "maxLength": 20
         },
         "maintenanceDate": {
@@ -1356,7 +1356,7 @@
         },
         "oldTransactionId": {
           "type": "string",
-          "description": "Orignal transactionId, mandatory if the functionType=2",
+          "description": "Orignal transactionId, mandatory if the functionType = cancel",
           "maxLength": 52
         },
         "tranWebMemberId": {
@@ -1521,7 +1521,7 @@
         "oldTransactionId": {
           "type": "string",
           "maxLength": 52,
-          "description": "Orignal transaction ID, mandatory if funactionType=1"
+          "description": "Orignal transaction ID, mandatory if funactionType= cancel"
         },
         "amount": {
           "type": "string",
