@@ -1066,9 +1066,6 @@
           "description": "Event id in Lianlian Pay's system"
         }
       ]
-    },
-    "": {
-      "parameters": []
     }
   },
   "definitions": {
@@ -1111,6 +1108,9 @@
         "isEnable",
         "createTime",
         "topics"
+      ],
+      "x-tags": [
+        "Models"
       ]
     },
     "event": {
@@ -1143,12 +1143,15 @@
         "topic",
         "createTime",
         "data"
+      ],
+      "x-tags": [
+        "Models"
       ]
     },
     "report": {
       "type": "object",
       "title": "Report",
-      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.memberEODBalance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Payment request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&Commission&TranDate&TranTime |\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&CashAmt&TranDate&TranTime |\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file, header is TranWebMemberId&Amt |\n| TOPUP_YYYYMMDD.gz | Coupon request reconcilation file, header is CnsmrSeqNo&TranWebMemberId&TransType&MemberFillAmt&TranDate&TranTime |",
+      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.memberEODBalance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Payment request reconcilation file|\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file |\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file |\n| TOPUP_YYYYMMDD.gz | Top-up request reconcilation file |",
       "required": [
         "id",
         "name",
@@ -1172,7 +1175,10 @@
           "type": "string",
           "description": "Report create time"
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "bank-account": {
       "type": "object",
@@ -1230,7 +1236,10 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "member": {
       "type": "object",
@@ -1284,7 +1293,10 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "transaction": {
       "type": "object",
@@ -1386,7 +1398,10 @@
           "description": "Error message if applicable",
           "maxLength": 300
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "payout": {
       "type": "object",
@@ -1450,7 +1465,10 @@
           "description": "Error message if appicable ",
           "maxLength": 300
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "topup": {
       "title": "Topup",
@@ -1511,7 +1529,10 @@
           "maxLength": 300,
           "description": "Error message if applicable"
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     },
     "add-bank-account-request": {
       "title": "add-bank-account-request",
@@ -1581,7 +1602,10 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      }
+      },
+      "x-tags": [
+        "Models"
+      ]
     }
   },
   "parameters": {},
