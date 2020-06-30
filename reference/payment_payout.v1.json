@@ -1305,7 +1305,7 @@
         },
         "cashAmt": {
           "type": "string",
-          "description": "Account balances that can payout, less than or equal to `AcctAvailBal`",
+          "description": "Account balances that can payout, less than or equal to `acctAvailBal`",
           "maxLength": 20
         },
         "maintenanceDate": {
