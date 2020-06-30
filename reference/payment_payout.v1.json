@@ -227,12 +227,12 @@
                 },
                 "oldTransactionId": {
                   "type": "string",
-                  "description": "Orignal transactionId, mandatory if the functionType = cancel",
+                  "description": "Original transaction ID, mandatory if the functionType = return",
                   "maxLength": 52
                 },
                 "payChannelType": {
                   "type": "string",
-                  "description": "Mandatory if transactionType = 1\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
                   "enum": [
                     "0001",
                     "0002"
@@ -241,12 +241,12 @@
                 },
                 "payChannelAssignMerNo": {
                   "type": "string",
-                  "description": "Mandatory if transactionType = 1\n\nMerchant number assigned to platform in acquirer's system",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
                   "maxLength": 50
                 },
                 "payChannelTranSeqNo": {
                   "type": "string",
-                  "description": "Mandatory if transactionType = 1\n\nTransaction number in acquirer's system",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
                   "maxLength": 52
                 },
                 "amount": {
@@ -284,7 +284,7 @@
           "name": "functionType",
           "in": "path",
           "required": true,
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a transaction |\n| cancel | Cancel a transaction |"
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
         },
         {
           "type": "string",
@@ -337,7 +337,7 @@
                 "oldTransactionId": {
                   "type": "string",
                   "maxLength": 52,
-                  "description": "Orignal transaction ID, mandatory if funactionType = cancel"
+                  "description": "Original transaction ID, mandatory if funactionType = return"
                 },
                 "amount": {
                   "type": "string",
@@ -368,7 +368,7 @@
           "name": "functionType",
           "in": "path",
           "required": true,
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a top-up |\n| cancel | Cancel a top-up |"
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a top-up |\n| return | Return a top-up |"
         }
       ]
     },
@@ -414,7 +414,8 @@
           "type": "string",
           "name": "functionType",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
         }
       ]
     },
@@ -447,7 +448,7 @@
           "name": "functionType",
           "in": "path",
           "required": true,
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a transaction |\n| cancel | Cancel a transaction |"
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a transaction |\n| return | Return a transaction |"
         },
         {
           "type": "string",
@@ -1165,7 +1166,7 @@
         },
         "topic": {
           "type": "array",
-          "description": "Event topics defined in Lianlian Pay's system.\n| Topic | Description |\n|-------|-------------|\n| member.payout.success | Payout success. |\n| member.payout.failed | Payout failed. |\n| reconciliation.payment.created | Payment reconciliation documents created. |\n| reconciliation.coupon.created | Coupon reconciliation documents created. |\n| reconciliation.payout.created | Payout reconciliation documents created. |\n| reconciliation.balance.created | End-of-day member account balance reconciliation documents created. |",
+          "description": "Event topics defined in Lianlian Pay's system.\n| Topic | Description |\n|-------|-------------|\n| member.payout.success | Payout success. |\n| member.payout.failed | Payout failed. |\n| reconciliation.transaction.created | Transaction reconciliation documents created. |\n| reconciliation.topup.created | Topup reconciliation documents created. |\n| reconciliation.payout.created | Payout reconciliation documents created. |\n| reconciliation.balance.created | End-of-day member account balance reconciliation documents created. |",
           "items": {
             "type": "string"
           }
@@ -1334,7 +1335,7 @@
       "properties": {
         "functionType": {
           "type": "string",
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a transaction |\n| cancel | Cancel a transaction |",
+          "description": "function type, one of: \n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |",
           "maxLength": 2,
           "enum": [
             "initial",
@@ -1359,7 +1360,7 @@
         },
         "oldTransactionId": {
           "type": "string",
-          "description": "Orignal transactionId, mandatory if the functionType = cancel",
+          "description": "Original transactionId, mandatory if the functionType = return",
           "maxLength": 52
         },
         "tranWebMemberId": {
@@ -1379,7 +1380,7 @@
         },
         "payChannelType": {
           "type": "string",
-          "description": "Mandatory if transactionType = 1\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
           "maxLength": 20,
           "enum": [
             "0001",
@@ -1388,12 +1389,12 @@
         },
         "payChannelAssignMerNo": {
           "type": "string",
-          "description": "Mandatory if transactionType = 1\n\nMerchant number assigned to platform in acquirer's system",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
           "maxLength": 50
         },
         "payChannelTranSeqNo": {
           "type": "string",
-          "description": "Mandatory if transactionType = 1\n\nTransaction number in acquirer's system",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
           "maxLength": 52
         },
         "tranDate": {
@@ -1500,7 +1501,7 @@
       "properties": {
         "functionType": {
           "type": "string",
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a topup |\n| cancel | Cancel a topup |",
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a topup |\n| return | Return a topup |",
           "enum": [
             "initial",
             "cancel"
@@ -1524,7 +1525,7 @@
         "oldTransactionId": {
           "type": "string",
           "maxLength": 52,
-          "description": "Orignal transaction ID, mandatory if funactionType= cancel"
+          "description": "Original transaction ID, mandatory if funactionType= return"
         },
         "amount": {
           "type": "string",
