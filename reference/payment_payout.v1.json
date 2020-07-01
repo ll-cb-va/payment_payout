@@ -185,7 +185,7 @@
         "operationId": "delete-webhook-registration"
       }
     },
-    "/members/{memberId}/transactions/{functionType}": {
+    "/members/{memberId}/transfer/{functionType}": {
       "post": {
         "responses": {
           "200": {
@@ -196,19 +196,20 @@
           },
           "": {
             "schema": {
-              "$ref": "#/definitions/transaction"
-            }
+              "$ref": "#/definitions/transfer"
+            },
+            "description": ""
           }
         },
-        "summary": "Send transaction",
-        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transaction` object\n",
+        "summary": "Init transfer",
+        "description": "Different types of transfer can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transfer` object\n",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "operationId": "send-transaction",
+        "operationId": "send-transfer",
         "parameters": [
           {
             "in": "body",
@@ -216,9 +217,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "transactionType": {
+                "transferType": {
                   "type": "string",
-                  "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+                  "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
                   "enum": [
                     "1",
                     "2",
@@ -226,14 +227,14 @@
                   ],
                   "maxLength": 2
                 },
-                "transactionId": {
+                "transferId": {
                   "type": "string",
-                  "description": "Transaction ID",
+                  "description": "Transfer ID",
                   "maxLength": 52
                 },
-                "oldTransactionId": {
+                "oldTransferId": {
                   "type": "string",
-                  "description": "Original transaction ID, mandatory if the functionType = return",
+                  "description": "Original transfer ID, mandatory if the functionType = return",
                   "maxLength": 52
                 },
                 "payChannelType": {
@@ -272,8 +273,8 @@
                 }
               },
               "required": [
-                "transactionType",
-                "transactionId",
+                "transferType",
+                "transferId",
                 "amount"
               ]
             },
@@ -383,7 +384,7 @@
         }
       ]
     },
-    "/members/{memberId}/transactions/{functionType}/{transactionId}": {
+    "/members/{memberId}/transfer/{functionType}/{transactionId}": {
       "get": {
         "responses": {
           "200": {
@@ -394,19 +395,19 @@
           },
           "": {
             "schema": {
-              "$ref": "#/definitions/transaction"
+              "$ref": "#/definitions/transfer"
             }
           }
         },
-        "description": "Get a transaction request details by id.\n\nReturn type is `transaction`object",
-        "summary": "Get Transaction",
+        "description": "Get a transaction request details by id.\n\nReturn type is `transfer`object",
+        "summary": "Get Transfer detail",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "operationId": "get-transaction",
+        "operationId": "get-transfer-detail",
         "tags": [
           "Transactons"
         ]
@@ -1285,9 +1286,9 @@
         "bankAccounts"
       ]
     },
-    "transaction": {
+    "transfer": {
       "type": "object",
-      "title": "Transaction",
+      "title": "Transfer",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
       "x-tags": [
         "Models"
@@ -1302,9 +1303,9 @@
             "cancel"
           ]
         },
-        "transactionType": {
+        "transferType": {
           "type": "string",
-          "description": "Transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+          "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
           "maxLength": 1,
           "enum": [
             "1",
@@ -1313,14 +1314,14 @@
           ],
           "minLength": 1
         },
-        "transactionId": {
+        "transferId": {
           "type": "string",
           "maxLength": 52,
-          "description": "Transaction ID"
+          "description": "Transfer ID"
         },
-        "oldTransactionId": {
+        "oldTransferId": {
           "type": "string",
-          "description": "Original transactionId, mandatory if the functionType = return",
+          "description": "Original transferId, mandatory if the functionType = return",
           "maxLength": 52
         },
         "memberId": {
@@ -1359,12 +1360,12 @@
         },
         "tranDate": {
           "type": "string",
-          "description": "Transaction date",
+          "description": "Transfer date",
           "maxLength": 8
         },
         "tranTime": {
           "type": "string",
-          "description": "Transaction time",
+          "description": "Transfer time",
           "maxLength": 20
         },
         "remark": {
@@ -1390,9 +1391,9 @@
       },
       "required": [
         "functionType",
-        "transactionType",
-        "transactionId",
-        "oldTransactionId",
+        "transferType",
+        "transferId",
+        "oldTransferId",
         "memberId",
         "amount",
         "commission",
