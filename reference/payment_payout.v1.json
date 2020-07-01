@@ -900,7 +900,7 @@
           }
         },
         "operationId": "get-members-tranWebMemberId-addbankaccounts",
-        "description": "Get bank account detail under a member that verifyStatus = 1 & verifyType = 2"
+        "description": "Get bank account detail under a member that verifyStatus = 0 & verifyType = 2"
       },
       "post": {
         "summary": "Add Bank Account",
@@ -913,7 +913,7 @@
             }
           }
         },
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `add-bank-account-request`object\n\nIf the verifyStatus = 1, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `add-bank-account-request`object\n\nIf the verifyStatus = 0, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
         "parameters": [
           {
             "in": "body",
@@ -1529,7 +1529,7 @@
             "1"
           ],
           "maxLength": 2,
-          "description": "Whether the bank account has been verified\n\n| Code | Description |\n|------|-------------|\n| 0 | Verified |\n| 1 | Wait to be verified |"
+          "description": "Whether the bank account has been verified\n\n| Code | Description |\n|------|-------------|\n| 0 | Wait to be verified |\n| 1 | Verified |"
         },
         "isFunded": {
           "type": "string",
