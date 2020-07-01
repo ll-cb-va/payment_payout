@@ -485,16 +485,13 @@
             }
           }
         },
-        "summary": "Create Member",
-        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member` ojbect.",
+        "summary": "Create Member sub-account",
+        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member sub-account` ojbect.",
         "produces": [
           "application/json"
         ],
         "consumes": [
           "application/json"
-        ],
-        "tags": [
-          "Member"
         ],
         "operationId": "create-member",
         "parameters": [
@@ -537,6 +534,9 @@
             },
             "description": ""
           }
+        ],
+        "tags": [
+          "Member sub-account"
         ]
       },
       "parameters": []
@@ -556,18 +556,18 @@
             }
           }
         },
-        "summary": "Get Member",
-        "description": "Get the sub account detail information of a host in Lianlian Pay bank partner's system by its ID.\n\nReturn type is `Member` object",
+        "summary": "Get Member sub-account",
+        "description": "Get the sub account detail information of a host in Lianlian Pay bank partner's system by its ID.\n\nReturn type is `Member sub-account` object",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
+        "operationId": "get-member",
         "tags": [
-          "Member"
-        ],
-        "operationId": "get-member"
+          "Member sub-account"
+        ]
       },
       "parameters": [
         {
@@ -587,18 +587,18 @@
             }
           }
         },
-        "summary": "Delete Memeber",
+        "summary": "Delete Memeber sub-account",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "tags": [
-          "Member"
-        ],
         "description": "Delete the sub account of the host in Lianlian Pay partner's bank system.",
-        "operationId": "delete-member"
+        "operationId": "delete-member",
+        "tags": [
+          "Member sub-account"
+        ]
       }
     },
     "/members/{memberId}/payouts": {
@@ -733,28 +733,33 @@
         }
       ]
     },
-    "/reports/{name}": {
+    "/document/{name}/detail": {
       "get": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/report"
+              "$ref": "#/definitions/document"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/document"
             }
           }
         },
-        "summary": "Get Report",
-        "description": "Download report by `name`\n\nReturn type is `Report` object",
+        "summary": "Get Document Id",
+        "description": "Get document detail by `name`\n\nReturn type is `Document` object",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
+        "operationId": "get-document",
         "tags": [
-          "Report"
-        ],
-        "operationId": "get-report"
+          "Document"
+        ]
       },
       "parameters": [
         {
@@ -871,30 +876,6 @@
           "description": "Member ID from platform"
         }
       ],
-      "get": {
-        "summary": "Get bank account list",
-        "tags": [
-          "Member"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/add-bank-account-request"
-              }
-            }
-          },
-          "": {
-            "schema": {
-              "$ref": "#/definitions/bank-account"
-            }
-          }
-        },
-        "operationId": "get-members-tranWebMemberId-bankaccounts",
-        "description": "Get bank account detail under a member that verifyStatus = 0 & verifyType = 2"
-      },
       "post": {
         "summary": "Add Bank Account",
         "operationId": "post-members-tranWebMemberId-bankaccounts",
@@ -906,7 +887,7 @@
             }
           }
         },
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `add-bank-account-request`object\n\nIf the verifyStatus = 0, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `bank-account`object\n\nIf the verifyStatus = 0, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
         "parameters": [
           {
             "in": "body",
@@ -978,7 +959,7 @@
           }
         ],
         "tags": [
-          "Member"
+          "Member sub-account"
         ]
       }
     },
@@ -1000,13 +981,13 @@
         }
       ],
       "put": {
-        "summary": "Retrigger the verification",
+        "summary": "Re-trigger the verification",
         "operationId": "Retrigger-the-verification",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/add-bank-account-request"
+              "$ref": "#/definitions/bank-account"
             }
           },
           "": {
@@ -1015,7 +996,7 @@
             }
           }
         },
-        "description": "Request to retrigger the bank account verification if the previous verification has failed or expired.",
+        "description": "Request to re-trigger the bank account verification if the previous verification has failed or expired.",
         "parameters": [
           {
             "in": "body",
@@ -1037,7 +1018,7 @@
           }
         ],
         "tags": [
-          "Member"
+          "Member sub-account"
         ]
       },
       "delete": {
@@ -1051,9 +1032,9 @@
             }
           }
         },
-        "description": "Delete bankaccount",
+        "description": "Delete bank account",
         "tags": [
-          "Member"
+          "Member sub-account"
         ]
       },
       "patch": {
@@ -1098,16 +1079,13 @@
           }
         ],
         "tags": [
-          "Member"
+          "Member sub-account"
         ]
       }
     },
     "/functionaccount": {
       "get": {
-        "summary": "Get functional sub-account",
-        "tags": [
-          "Member"
-        ],
+        "summary": "Get function sub-account",
         "responses": {
           "200": {
             "description": "OK",
@@ -1120,7 +1098,10 @@
           }
         },
         "operationId": "get-function-account",
-        "description": "Get the detail of all functional sub-account\n\n|Code|Description|Usage|\n|--------|--------|----|\n|1|coupon account| fund in this account can be transfered to member account for marketing purpose |\n|2|commission account| fund belonged to platform will be deposited into this account |\n|3|holding account| fund in this account can be transfered to coupon account |"
+        "description": "Get the detail of all function sub-account\n\n|Code|Description|Usage|\n|--------|--------|----|\n|1|coupon account| fund in this account can be transfered to member account for marketing purpose |\n|2|commission account| fund belonged to platform will be deposited into this account |\n",
+        "tags": [
+          "function sub-account"
+        ]
       }
     }
   },
@@ -1204,41 +1185,41 @@
         "Models"
       ]
     },
-    "report": {
+    "document": {
       "type": "object",
-      "title": "Report",
+      "title": "Document",
       "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.balance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Transaction request reconcilation file\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file|\n| TOPUP_YYYYMMDD.gz | Top-up request reconcilation file|",
+      "x-tags": [
+        "Models"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Document Name"
+        },
+        "size": {
+          "type": "number",
+          "description": "Document file size"
+        },
+        "createTime": {
+          "type": "string",
+          "description": "Document create time"
+        }
+      },
       "required": [
         "id",
         "name",
         "size",
         "createTime"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Report id"
-        },
-        "name": {
-          "type": "string",
-          "description": "Report name"
-        },
-        "size": {
-          "type": "number",
-          "description": "Report file size"
-        },
-        "createTime": {
-          "type": "string",
-          "description": "Report create time"
-        }
-      },
-      "x-tags": [
-        "Models"
       ]
     },
     "member": {
       "type": "object",
-      "title": "Member",
+      "title": "Member sub-account",
       "description": "Member account of a single platform host defined in Lianlian Pay bank partner's system.",
       "x-tags": [
         "Models"
@@ -1291,7 +1272,18 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      }
+      },
+      "required": [
+        "memberId",
+        "userNickName",
+        "mobile",
+        "email",
+        "totalBalance",
+        "availableBalance",
+        "lastModifyDate",
+        "remark",
+        "bankAccounts"
+      ]
     },
     "transaction": {
       "type": "object",
@@ -1395,7 +1387,18 @@
           "description": "Error message if applicable",
           "maxLength": 300
         }
-      }
+      },
+      "required": [
+        "functionType",
+        "transactionType",
+        "transactionId",
+        "oldTransactionId",
+        "memberId",
+        "amount",
+        "commission",
+        "tranDate",
+        "tranTime"
+      ]
     },
     "payout": {
       "type": "object",
@@ -1460,7 +1463,19 @@
           "description": "Error message if appicable ",
           "maxLength": 300
         }
-      }
+      },
+      "required": [
+        "payoutId",
+        "memberId",
+        "bankAccountNumber",
+        "bankName",
+        "amount",
+        "payoutDate",
+        "payoutTime",
+        "remark",
+        "status",
+        "failMsg"
+      ]
     },
     "topup": {
       "title": "Topup",
@@ -1523,7 +1538,16 @@
           "maxLength": 300,
           "description": "Error message if applicable"
         }
-      }
+      },
+      "required": [
+        "functionType",
+        "topUpType",
+        "topUpId",
+        "oldTopUpId",
+        "amount",
+        "remark",
+        "status"
+      ]
     },
     "bank-account": {
       "title": "bank-account",
@@ -1586,21 +1610,32 @@
           "description": "Mobile number registered in bank",
           "maxLength": 30
         }
-      }
+      },
+      "required": [
+        "verifyStatus",
+        "verifyType",
+        "memberIdType",
+        "memberIdNumber",
+        "memberName",
+        "bankAccountNumber",
+        "mobile"
+      ]
     },
     "functional-sub-account": {
-      "title": "functional-sub-account",
+      "title": "Functional sub-account",
       "type": "object",
       "description": "Functional sub-accounts created by default by Lianlian Pay bank partner",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "accountType": {
           "type": "string",
           "enum": [
             "1",
-            "2",
-            "3"
+            "2"
           ],
-          "description": "Account Type, one of\n\n|Code|Description|\n|--------|--------|\n|1|coupon account|\n|2|commission account|\n|3|holding account|",
+          "description": "Account Type, one of\n\n|Code|Description|\n|--------|--------|\n|1|coupon account|\n|2|commission account|",
           "maxLength": 2
         },
         "totalBalance": {
@@ -1614,8 +1649,10 @@
           "maxLength": 20
         }
       },
-      "x-tags": [
-        "Models"
+      "required": [
+        "accountType",
+        "totalBalance",
+        "availableBalance"
       ]
     }
   },
