@@ -201,15 +201,15 @@
             "description": ""
           }
         },
-        "summary": "Init transfer",
-        "description": "Different types of transfer can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transfer` object\n",
+        "summary": "Create transfer",
+        "description": "Different types of transfer can be created on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transferType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transfer` object\n",
         "consumes": [
           "application/json"
         ],
         "produces": [
           "application/json"
         ],
-        "operationId": "send-transfer",
+        "operationId": "Create-transfer",
         "parameters": [
           {
             "in": "body",
@@ -282,7 +282,7 @@
           }
         ],
         "tags": [
-          "Transactons"
+          "Transfer"
         ]
       },
       "parameters": [
@@ -312,7 +312,7 @@
             }
           }
         },
-        "summary": "Top-up",
+        "summary": "Create top-up",
         "description": "top-up a specific account\n\nThe function type is used to distinguish whether the transaction is initiated or returned. ",
         "consumes": [
           "application/json"
@@ -409,7 +409,7 @@
         ],
         "operationId": "get-transfer-detail",
         "tags": [
-          "Transactons"
+          "Transfer"
         ]
       },
       "parameters": [
@@ -704,7 +704,7 @@
             }
           }
         },
-        "summary": "Get Payout",
+        "summary": "Get Payout detail",
         "description": "Get a payout request details by payoutId.",
         "consumes": [
           "application/json"
