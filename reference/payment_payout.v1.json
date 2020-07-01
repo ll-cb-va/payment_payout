@@ -184,7 +184,7 @@
         "operationId": "delete-webhook-registration"
       }
     },
-    "/members/{tranWebMemberId}/transactions/{functionType}": {
+    "/members/{memberId}/transactions/{functionType}": {
       "post": {
         "responses": {
           "200": {
@@ -192,10 +192,15 @@
             "schema": {
               "$ref": "#/definitions/transaction"
             }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/transaction"
+            }
           }
         },
         "summary": "Send transaction",
-        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transaction` object\n",
+        "description": "Different types of transactions can be initiated on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transaction is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the tranaction belongs to.\n\n| transactionType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transaction` object\n",
         "consumes": [
           "application/json"
         ],
@@ -288,10 +293,10 @@
         },
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
           "required": true,
-          "description": "Member ID in platform's system"
+          "description": "Member ID from platform"
         }
       ]
     },
@@ -321,7 +326,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "transactionType": {
+                "topUpType": {
                   "type": "string",
                   "enum": [
                     "1"
@@ -329,12 +334,17 @@
                   "maxLength": 2,
                   "description": "transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
                 },
-                "transactionId": {
+                "memberId": {
+                  "type": "string",
+                  "description": "Member ID from platform",
+                  "maxLength": 32
+                },
+                "topUpId": {
                   "type": "string",
                   "maxLength": 52,
                   "description": "Transaction ID generated in platform's system"
                 },
-                "oldTransactionId": {
+                "oldTopUpId": {
                   "type": "string",
                   "maxLength": 52,
                   "description": "Original transaction ID, mandatory if funactionType = return"
@@ -350,8 +360,8 @@
                 }
               },
               "required": [
-                "transactionType",
-                "transactionId",
+                "topUpType",
+                "topUpId",
                 "amount"
               ]
             },
@@ -372,11 +382,16 @@
         }
       ]
     },
-    "/members/{tranWebMemberId}/transactions/{functionType}/{transactionId}": {
+    "/members/{memberId}/transactions/{functionType}/{transactionId}": {
       "get": {
         "responses": {
           "200": {
             "description": "",
+            "schema": {
+              "$ref": "#/definitions/transaction"
+            }
+          },
+          "": {
             "schema": {
               "$ref": "#/definitions/transaction"
             }
@@ -398,7 +413,7 @@
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
           "required": true,
           "description": "Member ID from platform"
@@ -419,7 +434,7 @@
         }
       ]
     },
-    "/topups/{functionType}/{transactionId}": {
+    "/topups/{functionType}/{topUpId}": {
       "get": {
         "responses": {
           "200": {
@@ -452,10 +467,10 @@
         },
         {
           "type": "string",
-          "name": "transactionId",
+          "name": "topUpId",
           "in": "path",
           "required": true,
-          "description": "Transaction ID generated in platform's system"
+          "description": "Top-up ID"
         }
       ]
     },
@@ -488,7 +503,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "tranWebMemberId": {
+                "memberId": {
                   "type": "string",
                   "maxLength": 32,
                   "description": "Member ID from platform"
@@ -515,7 +530,7 @@
                 }
               },
               "required": [
-                "tranWebMemberId",
+                "memberId",
                 "userNickName"
               ]
             },
@@ -525,11 +540,16 @@
       },
       "parameters": []
     },
-    "/members/{tranWebMemberId}": {
+    "/members/{memberId}": {
       "get": {
         "responses": {
           "200": {
             "description": "",
+            "schema": {
+              "$ref": "#/definitions/member"
+            }
+          },
+          "": {
             "schema": {
               "$ref": "#/definitions/member"
             }
@@ -551,10 +571,9 @@
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
-          "required": true,
-          "description": "Member ID from platform"
+          "required": true
         }
       ],
       "delete": {
@@ -581,7 +600,7 @@
         "operationId": "delete-member"
       }
     },
-    "/members/{tranWebMemberId}/bankaccounts/{bankAccountNumber}": {
+    "/members/{memberId}/bankaccounts/{bankAccountNumber}": {
       "delete": {
         "responses": {
           "200": {
@@ -608,7 +627,7 @@
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
           "required": true,
           "description": "Member ID from platform"
@@ -622,11 +641,16 @@
         }
       ]
     },
-    "/members/{tranWebMemberId}/payouts": {
+    "/members/{memberId}/payouts": {
       "post": {
         "responses": {
           "200": {
             "description": "",
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          },
+          "": {
             "schema": {
               "$ref": "#/definitions/payout"
             }
@@ -697,14 +721,14 @@
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
           "required": true,
           "description": "Member ID from platform"
         }
       ]
     },
-    "/members/{tranWebMemberId}/payouts/{payoutId}": {
+    "/members/{memberId}/payouts/{payoutId}": {
       "get": {
         "responses": {
           "200": {
@@ -735,7 +759,7 @@
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
           "required": true,
           "description": "Member ID from platform"
@@ -877,23 +901,32 @@
         }
       ]
     },
-    "/members/{tranWebMemberId}/addbankaccounts": {
+    "/members/{memberId}/addbankaccounts": {
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ],
       "get": {
-        "summary": "Get unverified bank account",
+        "summary": "Get unverified bank account list",
         "tags": [
           "Member"
         ],
         "responses": {
           "200": {
             "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/add-bank-account-request"
+              }
+            }
+          },
+          "": {
             "schema": {
               "$ref": "#/definitions/add-bank-account-request"
             }
@@ -989,19 +1022,21 @@
         ]
       }
     },
-    "/members/{tranWebMemberId}/addbankaccounts/{bankAccountNumber}": {
+    "/members/{memberId}/addbankaccounts/{bankAccountNumber}": {
       "parameters": [
         {
           "type": "string",
-          "name": "tranWebMemberId",
+          "name": "memberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         },
         {
           "type": "string",
           "name": "bankAccountNumber",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Bank account number or card number"
         }
       ],
       "put": {
@@ -1010,6 +1045,11 @@
         "responses": {
           "200": {
             "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/add-bank-account-request"
+            }
+          },
+          "": {
             "schema": {
               "$ref": "#/definitions/add-bank-account-request"
             }
@@ -1049,6 +1089,26 @@
         "tags": [
           "Member"
         ]
+      }
+    },
+    "/functionaccount": {
+      "get": {
+        "summary": "get functional sub-account detail",
+        "tags": [
+          "Member"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/functional-sub-account"
+              }
+            }
+          }
+        },
+        "operationId": "get-function-account"
       }
     }
   },
@@ -1229,8 +1289,11 @@
       "type": "object",
       "title": "Member",
       "description": "Member account of a single platform host defined in Lianlian Pay bank partner's system.",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
-        "tranWebMemberId": {
+        "memberId": {
           "type": "string",
           "description": "Member ID from platform",
           "maxLength": 32
@@ -1250,19 +1313,19 @@
           "description": "Email address",
           "maxLength": 150
         },
-        "acctAvailBal": {
+        "totalBalance": {
           "type": "string",
-          "description": "Account balance",
+          "description": "Total account balance",
           "maxLength": 20
         },
-        "cashAmt": {
+        "availableBalance": {
           "type": "string",
-          "description": "Account balances that can payout, less than or equal to `acctAvailBal`",
+          "description": "Account balances that can payout, less than or equal to `totalBalance`",
           "maxLength": 20
         },
-        "maintenanceDate": {
+        "lastModifyDate": {
           "type": "string",
-          "description": "Modify date",
+          "description": "Last modify date",
           "maxLength": 8
         },
         "remark": {
@@ -1277,10 +1340,7 @@
             "$ref": "#/definitions/bank-account"
           }
         }
-      },
-      "x-tags": [
-        "Models"
-      ]
+      }
     },
     "transaction": {
       "type": "object",
@@ -1320,7 +1380,7 @@
           "description": "Original transactionId, mandatory if the functionType = return",
           "maxLength": 52
         },
-        "tranWebMemberId": {
+        "memberId": {
           "type": "string",
           "description": "Member ID from platform",
           "maxLength": 32
@@ -1399,7 +1459,7 @@
           "description": "Payout ID generated in Platform System",
           "maxLength": 52
         },
-        "tranWebMemberId": {
+        "memberId": {
           "type": "string",
           "description": "Memeber id",
           "maxLength": 32
@@ -1468,24 +1528,24 @@
           ],
           "maxLength": 10
         },
-        "transactionType": {
+        "topUpType": {
           "type": "string",
           "minLength": 1,
           "maxLength": 1,
           "enum": [
             "1"
           ],
-          "description": "transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
+          "description": "Top-up type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
         },
-        "transactionId": {
+        "topUpId": {
           "type": "string",
           "maxLength": 52,
-          "description": "Transaction ID"
+          "description": "Top-up ID"
         },
-        "oldTransactionId": {
+        "oldTopUpId": {
           "type": "string",
           "maxLength": 52,
-          "description": "Original transaction ID, mandatory if funactionType= return  ..."
+          "description": "Original Top-up ID, mandatory if funactionType= return"
         },
         "amount": {
           "type": "string",
@@ -1584,6 +1644,32 @@
           "maxLength": 30
         }
       }
+    },
+    "functional-sub-account": {
+      "title": "functional-sub-account",
+      "type": "object",
+      "description": "Functional sub-accounts created by default by Lianlian Pay bank partner",
+      "properties": {
+        "accountType": {
+          "type": "string",
+          "enum": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "description": "Account Type, one of\n\n|Code|Description|\n|--------|--------|\n|1|coupon account|\n|2|commission account|\n|3|holding account|"
+        },
+        "totalBalance": {
+          "type": "string"
+        },
+        "availableBalance": {
+          "type": "string"
+        }
+      },
+      "x-tags": [
+        "Member"
+      ]
     }
   },
   "parameters": {},
