@@ -601,47 +601,6 @@
         "operationId": "delete-member"
       }
     },
-    "/members/{memberId}/bankaccounts/{bankAccountNumber}": {
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          }
-        },
-        "summary": "Remove Bank Account",
-        "description": "Remove a beneficiary bank account in Lianlian Pay bank partner's system for a host.\n",
-        "consumes": [
-          "application/json"
-        ],
-        "tags": [
-          "Member"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "operationId": "remove-bank-account"
-      },
-      "parameters": [
-        {
-          "type": "string",
-          "name": "memberId",
-          "in": "path",
-          "required": true,
-          "description": "Member ID from platform"
-        },
-        {
-          "type": "string",
-          "name": "bankAccountNumber",
-          "in": "path",
-          "required": true,
-          "description": "Bank account number or card number"
-        }
-      ]
-    },
     "/members/{memberId}/payouts": {
       "post": {
         "responses": {
@@ -902,7 +861,7 @@
         }
       ]
     },
-    "/members/{memberId}/addbankaccounts": {
+    "/members/{memberId}/bankaccounts": {
       "parameters": [
         {
           "type": "string",
@@ -913,7 +872,7 @@
         }
       ],
       "get": {
-        "summary": "Get unverified bank account list",
+        "summary": "Get bank account list",
         "tags": [
           "Member"
         ],
@@ -929,21 +888,21 @@
           },
           "": {
             "schema": {
-              "$ref": "#/definitions/add-bank-account-request"
+              "$ref": "#/definitions/bank-account"
             }
           }
         },
-        "operationId": "get-members-tranWebMemberId-addbankaccounts",
+        "operationId": "get-members-tranWebMemberId-bankaccounts",
         "description": "Get bank account detail under a member that verifyStatus = 0 & verifyType = 2"
       },
       "post": {
         "summary": "Add Bank Account",
-        "operationId": "post-members-tranWebMemberId-addbankaccounts",
+        "operationId": "post-members-tranWebMemberId-bankaccounts",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/add-bank-account-request"
+              "$ref": "#/definitions/bank-account"
             }
           }
         },
@@ -1023,7 +982,7 @@
         ]
       }
     },
-    "/members/{memberId}/addbankaccounts/{bankAccountNumber}": {
+    "/members/{memberId}/bankaccounts/{bankAccountNumber}": {
       "parameters": [
         {
           "type": "string",
@@ -1041,8 +1000,8 @@
         }
       ],
       "put": {
-        "summary": "Verify Bank Account",
-        "operationId": "verify-bank-account",
+        "summary": "Retrigger the verification",
+        "operationId": "Retrigger-the-verification",
         "responses": {
           "200": {
             "description": "OK",
@@ -1052,7 +1011,59 @@
           },
           "": {
             "schema": {
-              "$ref": "#/definitions/add-bank-account-request"
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "description": "Request to retrigger the bank account verification if the previous verification has failed or expired.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyType": {
+                  "type": "string",
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
+                  "maxLength": 2
+                }
+              },
+              "required": [
+                "verifyType"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "tags": [
+          "Member"
+        ]
+      },
+      "delete": {
+        "summary": "Remove bank account",
+        "operationId": "delete-members-memberId-bankaccounts-bankAccountNumber",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "description": "Delete bankaccount",
+        "tags": [
+          "Member"
+        ]
+      },
+      "patch": {
+        "summary": "Verify Bank Account",
+        "operationId": "verify-bank-account",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
             }
           }
         },
@@ -1066,25 +1077,24 @@
               "properties": {
                 "verifyType": {
                   "type": "string",
-                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
                   "enum": [
                     "1",
                     "2"
                   ],
-                  "maxLength": 2
+                  "maxLength": 2,
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
                 },
                 "verifyInfo": {
                   "type": "string",
-                  "description": "Input SMS code if verifyType=1\nInput amount of receiving fund if verifyType=2",
-                  "maxLength": 10
+                  "maxLength": 10,
+                  "description": "Input SMS code if verifyType=1\nInput amount of receiving fund if verifyType=2"
                 }
               },
               "required": [
                 "verifyType",
                 "verifyInfo"
               ]
-            },
-            "description": ""
+            }
           }
         ],
         "tags": [
@@ -1094,7 +1104,7 @@
     },
     "/functionaccount": {
       "get": {
-        "summary": "Get functional sub-account detail",
+        "summary": "Get functional sub-account",
         "tags": [
           "Member"
         ],
@@ -1220,67 +1230,6 @@
         "createTime": {
           "type": "string",
           "description": "Report create time"
-        }
-      },
-      "x-tags": [
-        "Models"
-      ]
-    },
-    "bank-account": {
-      "type": "object",
-      "title": "Bank Account",
-      "description": "Beneficiary bank account object defined in Lianlian Pay bank partner's system.",
-      "properties": {
-        "verifyType": {
-          "type": "string",
-          "enum": [
-            "1",
-            "2"
-          ],
-          "maxLength": 1,
-          "minLength": 1,
-          "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
-        },
-        "memberIdType": {
-          "type": "string",
-          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
-          "enum": [
-            "1",
-            "52",
-            "4",
-            "73"
-          ],
-          "maxLength": 5
-        },
-        "memberIdNumber": {
-          "type": "string",
-          "description": "Member ID number",
-          "maxLength": 32
-        },
-        "memberName": {
-          "type": "string",
-          "description": "Member name",
-          "maxLength": 150
-        },
-        "bankAccountNumber": {
-          "type": "string",
-          "description": "Bank account number or card number",
-          "maxLength": 50
-        },
-        "bankName": {
-          "type": "string",
-          "description": "Bank name",
-          "maxLength": 80
-        },
-        "bankCnapsCode": {
-          "type": "string",
-          "description": "Bank code defined in China National Advanced Payment System",
-          "maxLength": 30
-        },
-        "mobile": {
-          "type": "string",
-          "description": "Mobile number registered in bank",
-          "maxLength": 30
         }
       },
       "x-tags": [
@@ -1576,10 +1525,10 @@
         }
       }
     },
-    "add-bank-account-request": {
-      "title": "add-bank-account-request",
+    "bank-account": {
+      "title": "bank-account",
       "type": "object",
-      "description": "add bank account request object defined in Lianlian Pay bank partner's system.\n\nThe verifyStatus is used to distinguish whether the bank account has been verified. ",
+      "description": "Beneficiary bank account object defined in Lianlian Pay bank partner's system.\n\nThe verifyStatus is used to distinguish whether the bank account has been verified. ",
       "x-tags": [
         "Models"
       ],
@@ -1592,14 +1541,6 @@
           ],
           "maxLength": 2,
           "description": "Whether the bank account has been verified\n\n| Code | Description |\n|------|-------------|\n| 0 | Wait to be verified |\n| 1 | Verified |"
-        },
-        "isFunded": {
-          "type": "string",
-          "enum": [
-            "Y",
-            "N"
-          ],
-          "description": "Whether the small amount fund has been transfered"
         },
         "verifyType": {
           "type": "string",
