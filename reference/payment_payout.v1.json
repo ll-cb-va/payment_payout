@@ -981,8 +981,8 @@
         }
       ],
       "put": {
-        "summary": "Re-trigger the verification",
-        "operationId": "Retrigger-the-verification",
+        "summary": "Re-trigger verification",
+        "operationId": "Retrigger-verification",
         "responses": {
           "200": {
             "description": "OK",
