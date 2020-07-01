@@ -2,7 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "Local Payout API",
-    "version": "1.0"
+    "version": "1.0",
+    "description": ""
   },
   "host": "example.com",
   "paths": {
@@ -1093,7 +1094,7 @@
     },
     "/functionaccount": {
       "get": {
-        "summary": "get functional sub-account detail",
+        "summary": "Get functional sub-account detail",
         "tags": [
           "Member"
         ],
@@ -1108,7 +1109,8 @@
             }
           }
         },
-        "operationId": "get-function-account"
+        "operationId": "get-function-account",
+        "description": "Get the detail of all functional sub-account\n\n|Code|Description|Usage|\n|--------|--------|----|\n|1|coupon account| fund in this account can be transfered to member account for marketing purpose |\n|2|commission account| fund belonged to platform will be deposited into this account |\n|3|holding account| fund in this account can be transfered to coupon account |"
       }
     }
   },
@@ -1655,20 +1657,24 @@
           "enum": [
             "1",
             "2",
-            "3",
-            "4"
+            "3"
           ],
-          "description": "Account Type, one of\n\n|Code|Description|\n|--------|--------|\n|1|coupon account|\n|2|commission account|\n|3|holding account|"
+          "description": "Account Type, one of\n\n|Code|Description|\n|--------|--------|\n|1|coupon account|\n|2|commission account|\n|3|holding account|",
+          "maxLength": 2
         },
         "totalBalance": {
-          "type": "string"
+          "type": "string",
+          "description": "Total balance",
+          "maxLength": 20
         },
         "availableBalance": {
-          "type": "string"
+          "type": "string",
+          "description": "Account balances that can payout, less than or equal to `totalBalance`",
+          "maxLength": 20
         }
       },
       "x-tags": [
-        "Member"
+        "Models"
       ]
     }
   },
