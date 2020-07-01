@@ -887,8 +887,10 @@
         }
       ],
       "get": {
-        "summary": "Get verifying bank account",
-        "tags": [],
+        "summary": "Get unverified bank account",
+        "tags": [
+          "Member"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -898,7 +900,7 @@
           }
         },
         "operationId": "get-members-tranWebMemberId-addbankaccounts",
-        "description": "Get bank account detail that wait to be verified with the method of samll amount verification"
+        "description": "Get bank account detail under a member that verifyStatus = 1 & verifyType = 2"
       },
       "post": {
         "summary": "Add Bank Account",
@@ -911,7 +913,7 @@
             }
           }
         },
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nLianlian Pay bank partner's offers two methods of card verification\n\n| Verification Type | Capability|\n|------|-------------|\n| UnionPay verification | Only available for individual bank account|\n| Small amount verification | All type of bank account |",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `add-bank-account-request`object\n\nIf the verifyStatus = 1, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
         "parameters": [
           {
             "in": "body",
@@ -981,6 +983,9 @@
               ]
             }
           }
+        ],
+        "tags": [
+          "Member"
         ]
       }
     },
@@ -1040,6 +1045,9 @@
             },
             "description": ""
           }
+        ],
+        "tags": [
+          "Member"
         ]
       }
     }
@@ -1509,7 +1517,10 @@
     "add-bank-account-request": {
       "title": "add-bank-account-request",
       "type": "object",
-      "description": "add bank account request object defined in Lianlian Pay bank partner's system.",
+      "description": "add bank account request object defined in Lianlian Pay bank partner's system.\n\nThe verifyStatus is used to distinguish whether the bank account has been verified. ",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "verifyStatus": {
           "type": "string",
@@ -1518,7 +1529,7 @@
             "1"
           ],
           "maxLength": 2,
-          "description": "Whether the bank account has been verified"
+          "description": "Whether the bank account has been verified\n\n| Code | Description |\n|------|-------------|\n| 0 | Verified |\n| 1 | Wait to be verified |"
         },
         "isFunded": {
           "type": "string",
