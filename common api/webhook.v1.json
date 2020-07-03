@@ -15,5 +15,50 @@
     "application/json"
   ],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "webhook": {
+      "type": "object",
+      "title": "Webhook",
+      "description": "Object used in Lianlian Pay's system to describe the client registration of event callbacks.\n\nLianlian Pay uses this object to identify events which should be pushed back to client's url.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Webhook registration id in Lianlian Pay's system"
+        },
+        "url": {
+          "type": "string",
+          "description": "Client callback url"
+        },
+        "isEnable": {
+          "type": "boolean",
+          "description": "Enable/disable callbacks"
+        },
+        "createTime": {
+          "type": "string",
+          "description": "Webhook registration time, UTC+0 timestamp"
+        },
+        "modifyTime": {
+          "type": "string",
+          "description": "Webhook last modified time, UTC+0 timestamp"
+        },
+        "topics": {
+          "type": "array",
+          "description": "Event topics in Lianlian Pay's system",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "isEnable",
+        "createTime",
+        "topics"
+      ],
+      "x-tags": [
+        "Models"
+      ]
+    }
+  }
 }

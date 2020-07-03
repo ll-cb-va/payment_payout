@@ -15,5 +15,41 @@
     "application/json"
   ],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "event": {
+      "type": "object",
+      "title": "Event",
+      "description": "Event object generated during business processing in Lianlian Pay's system. ",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Event id in Lianlian Pay's system"
+        },
+        "topic": {
+          "type": "array",
+          "description": "Event topics defined in Lianlian Pay's system.\n\n| Topic | Description |\n|------|-------------|\n| member.payout.success | Payout success. |\n| member.payout.failed | Payout failed. |\n| reconciliation.transaction.created |Transaction reconciliation documents created.|\n| reconciliation.topup.created | Topup reconciliation documents created. |\n| reconciliation.payout.created | Payout reconciliation documents created. |\n| reconciliation.balance.created | End-of-day member account balance reconciliation documents created. |",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createTime": {
+          "type": "string",
+          "description": "Event created time, UTC+0 timestamp"
+        },
+        "data": {
+          "type": "object",
+          "description": "Event details"
+        }
+      },
+      "required": [
+        "id",
+        "topic",
+        "createTime",
+        "data"
+      ],
+      "x-tags": [
+        "Models"
+      ]
+    }
+  }
 }

@@ -15,5 +15,121 @@
     "application/json"
   ],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "transfer": {
+      "type": "object",
+      "title": "Transfer",
+      "description": "Data set defined in Lianlian Pay bank partner's system to describe a transaction related to host's member account",
+      "x-tags": [
+        "Models"
+      ],
+      "properties": {
+        "functionType": {
+          "type": "string",
+          "description": "function type, one of: \n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |",
+          "maxLength": 2,
+          "enum": [
+            "initial",
+            "cancel"
+          ]
+        },
+        "transferType": {
+          "type": "string",
+          "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+          "maxLength": 1,
+          "enum": [
+            "1",
+            "2",
+            "3"
+          ],
+          "minLength": 1
+        },
+        "transferId": {
+          "type": "string",
+          "maxLength": 52,
+          "description": "Transfer ID"
+        },
+        "oldTransferId": {
+          "type": "string",
+          "description": "Original transferId, mandatory if the functionType = return",
+          "maxLength": 52
+        },
+        "memberId": {
+          "type": "string",
+          "description": "Member ID from platform",
+          "maxLength": 32
+        },
+        "amount": {
+          "type": "string",
+          "description": "Transaction amount",
+          "maxLength": 20
+        },
+        "commission": {
+          "type": "string",
+          "description": "Commission fee",
+          "maxLength": 20
+        },
+        "payChannelType": {
+          "type": "string",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+          "maxLength": 20,
+          "enum": [
+            "0001",
+            "0002"
+          ]
+        },
+        "payChannelAssignMerNo": {
+          "type": "string",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
+          "maxLength": 50
+        },
+        "payChannelTranSeqNo": {
+          "type": "string",
+          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
+          "maxLength": 52
+        },
+        "tranDate": {
+          "type": "string",
+          "description": "Transfer date",
+          "maxLength": 8
+        },
+        "tranTime": {
+          "type": "string",
+          "description": "Transfer time",
+          "maxLength": 20
+        },
+        "remark": {
+          "type": "string",
+          "description": "Remark",
+          "maxLength": 300
+        },
+        "status": {
+          "type": "string",
+          "description": "Status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |",
+          "enum": [
+            "0",
+            "1",
+            "2"
+          ],
+          "maxLength": 2
+        },
+        "failMsg": {
+          "type": "string",
+          "description": "Error message if applicable",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "functionType",
+        "transferType",
+        "transferId",
+        "oldTransferId",
+        "memberId",
+        "amount",
+        "commission",
+        "tranDate",
+        "tranTime"
+      ]
+    }
+  }
 }

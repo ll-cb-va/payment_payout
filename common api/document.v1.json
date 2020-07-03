@@ -15,5 +15,38 @@
     "application/json"
   ],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "document": {
+      "type": "object",
+      "title": "Document",
+      "description": "Report object defined in Lianlian Pay's system. Used to download reports such as reconcilation files generated in Lianlian Pay bank partner's system.\n\n<!-- theme: info -->\n>Two ways to access daily reconcilation files:\n>\n>1. Request \"Get Report\" API with file name following below reconciliation file name format defination after 08:00 PM(GMT+8) everyday to download.\n>\n>2. Enroll Lianlian Pay Webhook and register `reconciliation.transaction.created`, `reconciliation.payout.created`, `reconciliation.balance.created`, `reconciliation.topup.created` topics to receive file ready notices, then download by requesting \"Get Report\" API.\n> \n\nApplicable reconciliation file types:\n\n| Name Format | Description |\n|-----------|-------------|\n| TRANSACTION_YYYYMMDD.gz | Transaction request reconcilation file\n| PAYOUT_YYYYMMDD.gz | Payout request reconcilation file\n| BALANCE_YYYYMMDD.gz | Member account EOD balance file|\n| TOPUP_YYYYMMDD.gz | Top-up request reconcilation file|",
+      "x-tags": [
+        "Models"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Document Name"
+        },
+        "size": {
+          "type": "number",
+          "description": "Document file size"
+        },
+        "createTime": {
+          "type": "string",
+          "description": "Document create time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "size",
+        "createTime"
+      ]
+    }
+  }
 }

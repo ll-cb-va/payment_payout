@@ -15,5 +15,78 @@
     "application/json"
   ],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "topup": {
+      "title": "Topup",
+      "type": "object",
+      "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
+      "x-tags": [
+        "Models"
+      ],
+      "properties": {
+        "functionType": {
+          "type": "string",
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a topup |\n| return | Return a topup |",
+          "enum": [
+            "initial",
+            "cancel"
+          ],
+          "maxLength": 10
+        },
+        "topUpType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1,
+          "enum": [
+            "1"
+          ],
+          "description": "Top-up type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
+        },
+        "topUpId": {
+          "type": "string",
+          "maxLength": 52,
+          "description": "Top-up ID"
+        },
+        "oldTopUpId": {
+          "type": "string",
+          "maxLength": 52,
+          "description": "Original Top-up ID, mandatory if funactionType= return"
+        },
+        "amount": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Top-up amount"
+        },
+        "remark": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Remark"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "0",
+            "1",
+            "2"
+          ],
+          "maxLength": 2,
+          "description": "Transaction status, one of:\n\n| Code | Description |\n|------|-------------|\n| 0 | Success |\n| 1 | Failed |\n| 2 | In progress |"
+        },
+        "failMsg": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Error message if applicable"
+        }
+      },
+      "required": [
+        "functionType",
+        "topUpType",
+        "topUpId",
+        "oldTopUpId",
+        "amount",
+        "remark",
+        "status"
+      ]
+    }
+  }
 }

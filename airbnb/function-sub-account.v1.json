@@ -15,5 +15,40 @@
     "application/json"
   ],
   "paths": {},
-  "definitions": {}
+  "definitions": {
+    "functional-sub-account": {
+      "title": "Functional sub-account",
+      "type": "object",
+      "description": "Functional sub-accounts created by default by Lianlian Pay bank partner",
+      "x-tags": [
+        "Models"
+      ],
+      "properties": {
+        "accountType": {
+          "type": "string",
+          "enum": [
+            "1",
+            "2"
+          ],
+          "description": "Account Type, one of\n\n|Code|Description|\n|--------|--------|\n|1|coupon account|\n|2|commission account|",
+          "maxLength": 2
+        },
+        "totalBalance": {
+          "type": "string",
+          "description": "Total balance",
+          "maxLength": 20
+        },
+        "availableBalance": {
+          "type": "string",
+          "description": "Account balances that can payout, less than or equal to `totalBalance`",
+          "maxLength": 20
+        }
+      },
+      "required": [
+        "accountType",
+        "totalBalance",
+        "availableBalance"
+      ]
+    }
+  }
 }
