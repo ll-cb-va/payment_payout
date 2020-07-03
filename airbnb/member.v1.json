@@ -1,0 +1,182 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "member sub-account",
+    "version": "1.0"
+  },
+  "host": "localhost:3000",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/members/{memberId}/payouts/{payoutId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          }
+        },
+        "summary": "Get Payout detail",
+        "description": "Get a payout request details by payoutId.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Payout"
+        ],
+        "operationId": "get-payout"
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "memberId",
+          "in": "path",
+          "required": true,
+          "description": "Member ID from platform"
+        },
+        {
+          "type": "string",
+          "name": "payoutId",
+          "in": "path",
+          "required": true,
+          "description": "Payout ID"
+        }
+      ]
+    },
+    "/members/{memberId}/transfer/{functionType}": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/transaction"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/transfer"
+            },
+            "description": ""
+          }
+        },
+        "summary": "Create transfer",
+        "description": "Different types of transfer can be created on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transferType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transfer` object\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "Create-transfer",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "transferType": {
+                  "type": "string",
+                  "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+                  "enum": [
+                    "1",
+                    "2",
+                    "3"
+                  ],
+                  "maxLength": 2
+                },
+                "transferId": {
+                  "type": "string",
+                  "description": "Transfer ID",
+                  "maxLength": 52
+                },
+                "oldTransferId": {
+                  "type": "string",
+                  "description": "Original transfer ID, mandatory if the functionType = return",
+                  "maxLength": 52
+                },
+                "payChannelType": {
+                  "type": "string",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+                  "enum": [
+                    "0001",
+                    "0002"
+                  ],
+                  "maxLength": 20
+                },
+                "payChannelAssignMerNo": {
+                  "type": "string",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
+                  "maxLength": 50
+                },
+                "payChannelTranSeqNo": {
+                  "type": "string",
+                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
+                  "maxLength": 52
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "Tranaction amount",
+                  "maxLength": 20
+                },
+                "commission": {
+                  "type": "string",
+                  "description": "Commission fee",
+                  "maxLength": 20
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Remark",
+                  "maxLength": 300
+                }
+              },
+              "required": [
+                "transferType",
+                "transferId",
+                "amount"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "tags": [
+          "Transfer"
+        ]
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "functionType",
+          "in": "path",
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
+        },
+        {
+          "type": "string",
+          "name": "memberId",
+          "in": "path",
+          "required": true,
+          "description": "Member ID from platform"
+        }
+      ]
+    }
+  },
+  "definitions": {}
+}
