@@ -14,7 +14,140 @@
   "consumes": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/members/{memberId}/payouts": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          }
+        },
+        "summary": "Create Payout",
+        "description": "Payout from sub account to beneficiary bank account. Payout amount should no larger than the sub account balance.\n\nReturn type is `Payout` object.\n",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "Payout"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "create-payout",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "payoutId": {
+                  "type": "string",
+                  "description": "Payout ID generated in Platform System",
+                  "maxLength": 52
+                },
+                "bankAccountNumber": {
+                  "type": "string",
+                  "description": "Beneficiary bank account number",
+                  "maxLength": 50
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "Cash out amount",
+                  "maxLength": 20
+                },
+                "payoutDate": {
+                  "type": "string",
+                  "description": "Transaction date",
+                  "maxLength": 8
+                },
+                "payoutTime": {
+                  "type": "string",
+                  "description": "Transaction time",
+                  "maxLength": 20
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Remark",
+                  "maxLength": 300
+                }
+              },
+              "required": [
+                "payoutId",
+                "bankAccountNumber",
+                "amount",
+                "payoutDate",
+                "payoutTime"
+              ]
+            },
+            "description": ""
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "memberId",
+          "in": "path",
+          "required": true,
+          "description": "Member ID from platform"
+        }
+      ]
+    },
+    "/members/{memberId}/payouts/{payoutId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          }
+        },
+        "summary": "Get Payout Detail",
+        "description": "Get a payout request details by payoutId.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Payout"
+        ],
+        "operationId": "get-payout"
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "memberId",
+          "in": "path",
+          "required": true,
+          "description": "Member ID from platform"
+        },
+        {
+          "type": "string",
+          "name": "payoutId",
+          "in": "path",
+          "required": true,
+          "description": "Payout ID"
+        }
+      ]
+    }
+  },
   "definitions": {
     "payout": {
       "type": "object",

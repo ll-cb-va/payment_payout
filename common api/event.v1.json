@@ -14,7 +14,68 @@
   "consumes": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+     "/events": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/event"
+              }
+            }
+          }
+        },
+        "summary": "Get Event List",
+        "description": "Get a list of Lianlian Pay bank partner's system generated events. If no events, empty list will be returned\n\nReturn type is List<`Event`>",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Event"
+        ],
+        "operationId": "get-event-list"
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/event"
+            }
+          }
+        },
+        "summary": "Get Event",
+        "description": "Get a Lianlian Pay bank partner's system generated event by `eventId`\n\nReturn type is `Event` object",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Event"
+        ],
+        "operationId": "get-event"
+      },
+      "parameters": [
+        {
+          "name": "eventId",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "description": "Event id in Lianlian Pay's system"
+        }
+      ]
+    }
+  },
   "definitions": {
     "event": {
       "type": "object",

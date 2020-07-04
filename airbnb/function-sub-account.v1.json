@@ -14,10 +14,32 @@
   "consumes": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/functionaccount": {
+      "get": {
+        "summary": "Get Function Sub-Account",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/functional-sub-account"
+              }
+            }
+          }
+        },
+        "operationId": "get-function-account",
+        "description": "Get the detail of all function sub-account\n\n|Code|Description|Usage|\n|--------|--------|----|\n|1|coupon account| fund in this account can be transfered to member account for marketing purpose |\n|2|commission account| fund belonged to platform will be deposited into this account |\n",
+        "tags": [
+          "function sub-account"
+        ]
+      }
+    }
+  },
   "definitions": {
     "functional-sub-account": {
-      "title": "Functional sub-account",
+      "title": "Functional Sub-Account",
       "type": "object",
       "description": "Functional sub-accounts created by default by Lianlian Pay bank partner",
       "x-tags": [

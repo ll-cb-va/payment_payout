@@ -191,7 +191,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/transaction"
+              "$ref": "#/definitions/transfer"
             }
           },
           "": {
@@ -390,7 +390,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/transaction"
+              "$ref": "#/definitions/transfer"
             }
           },
           "": {

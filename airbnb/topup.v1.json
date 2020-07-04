@@ -14,10 +14,133 @@
   "consumes": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/topup/{functionType}": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/topup"
+            }
+          }
+        },
+        "summary": "Create Top-Up",
+        "description": "top-up a specific account\n\nThe function type is used to distinguish whether the transaction is initiated or returned. ",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "top-up",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "topUpType": {
+                  "type": "string",
+                  "enum": [
+                    "1"
+                  ],
+                  "maxLength": 2,
+                  "description": "transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
+                },
+                "memberId": {
+                  "type": "string",
+                  "description": "Member ID from platform",
+                  "maxLength": 32
+                },
+                "topUpId": {
+                  "type": "string",
+                  "maxLength": 52,
+                  "description": "Transaction ID generated in platform's system"
+                },
+                "oldTopUpId": {
+                  "type": "string",
+                  "maxLength": 52,
+                  "description": "Original transaction ID, mandatory if funactionType = return"
+                },
+                "amount": {
+                  "type": "string",
+                  "maxLength": 20,
+                  "description": "Top-up amount"
+                },
+                "remark": {
+                  "type": "string",
+                  "description": "Remark"
+                }
+              },
+              "required": [
+                "topUpType",
+                "topUpId",
+                "amount"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "tags": [
+          "Top-up"
+        ]
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "functionType",
+          "in": "path",
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a top-up |\n| return | Return a top-up |"
+        }
+      ]
+    },
+    "/topups/{functionType}/{topUpId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/topup"
+            }
+          }
+        },
+        "description": "Get a top-up transaction request details by transactionId.",
+        "summary": "Get Top-Up Detail",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "get-top-up",
+        "tags": [
+          "Top-up"
+        ]
+      },
+      "parameters": [
+        {
+          "type": "string",
+          "name": "functionType",
+          "in": "path",
+          "required": true,
+          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initial | Initial a transaction |\n| return | Return a transaction |"
+        },
+        {
+          "type": "string",
+          "name": "topUpId",
+          "in": "path",
+          "required": true,
+          "description": "Top-up ID"
+        }
+      ]
+    }
+  },
   "definitions": {
     "topup": {
-      "title": "Topup",
+      "title": "Top-Up",
       "type": "object",
       "description": "Data set defined in Lianlian Pay bank partner's system to describe a top-up transaction related to specific account",
       "x-tags": [

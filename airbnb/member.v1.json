@@ -15,76 +15,25 @@
     "application/json"
   ],
   "paths": {
-    "/members/{memberId}/payouts/{payoutId}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/payout"
-            }
-          },
-          "": {
-            "schema": {
-              "$ref": "#/definitions/payout"
-            }
-          }
-        },
-        "summary": "Get Payout detail",
-        "description": "Get a payout request details by payoutId.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Payout"
-        ],
-        "operationId": "get-payout"
-      },
-      "parameters": [
-        {
-          "type": "string",
-          "name": "memberId",
-          "in": "path",
-          "required": true,
-          "description": "Member ID from platform"
-        },
-        {
-          "type": "string",
-          "name": "payoutId",
-          "in": "path",
-          "required": true,
-          "description": "Payout ID"
-        }
-      ]
-    },
-    "/members/{memberId}/transfer/{functionType}": {
+    "/members": {
       "post": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/transaction"
+              "$ref": "#/definitions/member"
             }
-          },
-          "": {
-            "schema": {
-              "$ref": "#/definitions/transfer"
-            },
-            "description": ""
           }
         },
-        "summary": "Create transfer",
-        "description": "Different types of transfer can be created on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transferType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transfer` object\n",
-        "consumes": [
-          "application/json"
-        ],
+        "summary": "Create Member Sub-Account",
+        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member sub-account` ojbect.",
         "produces": [
           "application/json"
         ],
-        "operationId": "Create-transfer",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "create-member",
         "parameters": [
           {
             "in": "body",
@@ -92,54 +41,25 @@
             "schema": {
               "type": "object",
               "properties": {
-                "transferType": {
+                "memberId": {
                   "type": "string",
-                  "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
-                  "enum": [
-                    "1",
-                    "2",
-                    "3"
-                  ],
-                  "maxLength": 2
+                  "maxLength": 32,
+                  "description": "Member ID from platform"
                 },
-                "transferId": {
+                "userNickName": {
                   "type": "string",
-                  "description": "Transfer ID",
-                  "maxLength": 52
+                  "description": "Member nick name",
+                  "maxLength": 150
                 },
-                "oldTransferId": {
+                "mobile": {
                   "type": "string",
-                  "description": "Original transfer ID, mandatory if the functionType = return",
-                  "maxLength": 52
+                  "description": "Mobile number",
+                  "maxLength": 30
                 },
-                "payChannelType": {
+                "email": {
                   "type": "string",
-                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
-                  "enum": [
-                    "0001",
-                    "0002"
-                  ],
-                  "maxLength": 20
-                },
-                "payChannelAssignMerNo": {
-                  "type": "string",
-                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
-                  "maxLength": 50
-                },
-                "payChannelTranSeqNo": {
-                  "type": "string",
-                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
-                  "maxLength": 52
-                },
-                "amount": {
-                  "type": "string",
-                  "description": "Tranaction amount",
-                  "maxLength": 20
-                },
-                "commission": {
-                  "type": "string",
-                  "description": "Commission fee",
-                  "maxLength": 20
+                  "description": "Email address",
+                  "maxLength": 150
                 },
                 "remark": {
                   "type": "string",
@@ -148,26 +68,81 @@
                 }
               },
               "required": [
-                "transferType",
-                "transferId",
-                "amount"
+                "memberId",
+                "userNickName"
               ]
             },
             "description": ""
           }
         ],
         "tags": [
-          "Transfer"
+          "Member sub-account"
+        ]
+      },
+      "parameters": []
+    },
+    "/members/{memberId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/member"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/member"
+            }
+          }
+        },
+        "summary": "Get Member Sub-Account",
+        "description": "Get the sub account detail information of a host in Lianlian Pay bank partner's system by its ID.\n\nReturn type is `Member sub-account` object",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "get-member",
+        "tags": [
+          "Member sub-account"
         ]
       },
       "parameters": [
         {
           "type": "string",
-          "name": "functionType",
+          "name": "memberId",
           "in": "path",
-          "required": true,
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
+          "required": true
+        }
+      ],
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
         },
+        "summary": "Delete Memeber Sub-Account",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "description": "Delete the sub account of the host in Lianlian Pay partner's bank system.",
+        "operationId": "delete-member",
+        "tags": [
+          "Member sub-account"
+        ]
+      }
+    },
+    "/members/{memberId}/bankaccounts": {
+      "parameters": [
         {
           "type": "string",
           "name": "memberId",
@@ -175,13 +150,219 @@
           "required": true,
           "description": "Member ID from platform"
         }
-      ]
+      ],
+      "post": {
+        "summary": "Add Bank Account",
+        "operationId": "post-members-tranWebMemberId-bankaccounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `bank-account`object\n\nIf the verifyStatus = 0, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyType": {
+                  "type": "string",
+                  "enum": [
+                    "1",
+                    "2"
+                  ],
+                  "maxLength": 2,
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
+                },
+                "memberIdType": {
+                  "type": "string",
+                  "enum": [
+                    "1",
+                    "4",
+                    "52",
+                    "73"
+                  ],
+                  "maxLength": 5,
+                  "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |"
+                },
+                "memberName": {
+                  "type": "string",
+                  "maxLength": 150,
+                  "description": "Member name"
+                },
+                "memberIdNumber": {
+                  "type": "string",
+                  "maxLength": 32,
+                  "description": "Member ID number"
+                },
+                "bankAccountNumber": {
+                  "type": "string",
+                  "maxLength": 50,
+                  "description": "Bank account number"
+                },
+                "bankName": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "description": "Bank name"
+                },
+                "bankCnapsCode": {
+                  "type": "string",
+                  "maxLength": 30,
+                  "description": "Bank code defined in China National Advanced Payment System"
+                },
+                "mobile": {
+                  "type": "string",
+                  "maxLength": 30,
+                  "description": "Mobile number registered in bank"
+                }
+              },
+              "required": [
+                "verifyType",
+                "memberIdType",
+                "memberName",
+                "memberIdNumber",
+                "bankAccountNumber",
+                "bankName",
+                "mobile"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Member sub-account"
+        ]
+      }
+    },
+    "/members/{memberId}/bankaccounts/{bankAccountNumber}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "memberId",
+          "in": "path",
+          "required": true,
+          "description": "Member ID from platform"
+        },
+        {
+          "type": "string",
+          "name": "bankAccountNumber",
+          "in": "path",
+          "required": true,
+          "description": "Bank account number or card number"
+        }
+      ],
+      "put": {
+        "summary": "Re-trigger Verification",
+        "operationId": "Retrigger-verification",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "description": "Request to re-trigger the bank account verification if the previous verification has failed or expired.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyType": {
+                  "type": "string",
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |",
+                  "maxLength": 2
+                }
+              },
+              "required": [
+                "verifyType"
+              ]
+            },
+            "description": ""
+          }
+        ],
+        "tags": [
+          "Member sub-account"
+        ]
+      },
+      "delete": {
+        "summary": "Remove Bank Account",
+        "operationId": "delete-members-memberId-bankaccounts-bankAccountNumber",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "description": "Delete bank account",
+        "tags": [
+          "Member sub-account"
+        ]
+      },
+      "patch": {
+        "summary": "Verify Bank Account",
+        "operationId": "verify-bank-account",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/bank-account"
+            }
+          }
+        },
+        "description": "Request to verify a host's beneficiary bank account in Lianlian Pay bank partner's system.\n\nTwo types of verification refer to different verification informations\n\n| Verification Type | Verification Information |\n|------|-------------|\n| UnionPay verification | SMS text |\n| Small amount verification | Random amount deposited in to beneficiary account |",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyType": {
+                  "type": "string",
+                  "enum": [
+                    "1",
+                    "2"
+                  ],
+                  "maxLength": 2,
+                  "description": "Verification type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | UnionPay verification |\n| 2 | Small amount verification |"
+                },
+                "verifyInfo": {
+                  "type": "string",
+                  "maxLength": 10,
+                  "description": "Input SMS code if verifyType=1\nInput amount of receiving fund if verifyType=2"
+                }
+              },
+              "required": [
+                "verifyType",
+                "verifyInfo"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "Member sub-account"
+        ]
+      }
     }
   },
   "definitions": {
-     "member": {
+    "member": {
       "type": "object",
-      "title": "Member sub-account",
+      "title": "Member Sub-Account",
       "description": "Member account of a single platform host defined in Lianlian Pay bank partner's system.",
       "x-tags": [
         "Models"
@@ -247,8 +428,8 @@
         "bankAccounts"
       ]
     },
-  "bank-account": {
-      "title": "bank-account",
+    "bank-account": {
+      "title": "Bank-Account",
       "type": "object",
       "description": "Beneficiary bank account object defined in Lianlian Pay bank partner's system.\n\nThe verifyStatus is used to distinguish whether the bank account has been verified. ",
       "x-tags": [

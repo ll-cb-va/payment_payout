@@ -14,7 +14,81 @@
   "consumes": [
     "application/json"
   ],
-  "paths": {},
+  "paths": {
+    "/document/{name}/detail": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/document"
+            }
+          },
+          "": {
+            "schema": {
+              "$ref": "#/definitions/document"
+            }
+          }
+        },
+        "summary": "Get Document Id",
+        "description": "Get document detail by `name`\n\nReturn type is `Document` object",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "operationId": "get-document",
+        "tags": [
+          "Document"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "description": "Report name"
+        }
+      ]
+    },
+    "/documents/{documentId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string",
+              "format": "byte",
+              "description": "Document data streaming"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        },
+        "summary": "Download Document",
+        "description": "Download document file by `dcoumentId`. \n",
+        "operationId": "download-document",
+        "tags": [
+          "Document"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "documentId",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "description": "Document id"
+        }
+      ]
+    }
+  },
   "definitions": {
     "document": {
       "type": "object",
