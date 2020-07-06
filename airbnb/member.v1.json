@@ -114,7 +114,8 @@
           "type": "string",
           "name": "memberId",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Member ID from platform"
         }
       ],
       "delete": {
