@@ -2,7 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "function sub-account",
-    "version": "1.0"
+    "version": "1.0",
+    "description": ""
   },
   "host": "localhost:3000",
   "schemes": [
@@ -39,7 +40,7 @@
   },
   "definitions": {
     "functional-sub-account": {
-      "title": "Functional Sub-Account",
+      "title": "Function Sub-Account",
       "type": "object",
       "description": "Functional sub-accounts created by default by Lianlian Pay bank partner",
       "x-tags": [
