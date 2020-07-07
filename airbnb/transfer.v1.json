@@ -32,7 +32,7 @@
           }
         },
         "summary": "Create Transfer",
-        "description": "Different types of transfer can be created on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transferType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `transfer` object\n",
+        "description": "Different types of transfer can be created on member accounts for different scenarios.\n\nThe function type is used to distinguish whether the transfer is initiated or returned. \n\nThe transaction type is used to distinguish which scenario the transfer belongs to.\n\n| transferType | Scenarios |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Debit coupon account to member account |\n| 3 | Debit member account to the platform's commission account |\n\nReturn type is `Transfer` object\n",
         "consumes": [
           "application/json"
         ],
@@ -112,7 +112,7 @@
           }
         ],
         "tags": [
-          "Transfer"
+          "Operations"
         ]
       },
       "parameters": [
@@ -147,7 +147,7 @@
             }
           }
         },
-        "description": "Get a transaction request details by id.\n\nReturn type is `transfer`object",
+        "description": "Get a transaction request details by id.\n\nReturn type is `Transfer`object",
         "summary": "Get Transfer Detail",
         "consumes": [
           "application/json"
@@ -157,7 +157,7 @@
         ],
         "operationId": "get-transfer-detail",
         "tags": [
-          "Transfer"
+          "Operations"
         ]
       },
       "parameters": [

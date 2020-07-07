@@ -35,9 +35,6 @@
         "consumes": [
           "application/json"
         ],
-        "tags": [
-          "Payout"
-        ],
         "produces": [
           "application/json"
         ],
@@ -90,6 +87,9 @@
             },
             "description": ""
           }
+        ],
+        "tags": [
+          "Operations"
         ]
       },
       "parameters": [
@@ -125,10 +125,10 @@
         "produces": [
           "application/json"
         ],
+        "operationId": "get-payout",
         "tags": [
-          "Payout"
-        ],
-        "operationId": "get-payout"
+          "Operations"
+        ]
       },
       "parameters": [
         {

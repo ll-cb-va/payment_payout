@@ -84,7 +84,7 @@
           }
         ],
         "tags": [
-          "Top-up"
+          "Operations"
         ]
       },
       "parameters": [
@@ -117,7 +117,7 @@
         ],
         "operationId": "get-top-up",
         "tags": [
-          "Top-up"
+          "Operations"
         ]
       },
       "parameters": [

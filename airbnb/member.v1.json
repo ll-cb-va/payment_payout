@@ -76,7 +76,7 @@
           }
         ],
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       },
       "parameters": []
@@ -97,7 +97,7 @@
           }
         },
         "summary": "Get Member Sub-Account",
-        "description": "Get the sub account detail information of a host in Lianlian Pay bank partner's system by its ID.\n\nReturn type is `Member sub-account` object",
+        "description": "Get the sub account detail information of a host in Lianlian Pay bank partner's system by its ID.\n\nReturn type is `Member Sub-Account` object",
         "consumes": [
           "application/json"
         ],
@@ -106,7 +106,7 @@
         ],
         "operationId": "get-member",
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       },
       "parameters": [
@@ -138,7 +138,7 @@
         "description": "Delete the sub account of the host in Lianlian Pay partner's bank system.",
         "operationId": "delete-member",
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       }
     },
@@ -163,7 +163,7 @@
             }
           }
         },
-        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `bank-account`object\n\nIf the verifyStatus = 0, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
+        "description": "Add a beneficiary bank account for payout and bind to the sub account in Lianlian Pay bank partner's system for a host.\n\nReturn type is `Bank-Account`object\n\nIf the verifyStatus = 0, the bank account need to be verified in following two methods \n\n| Verification Type | Description|Capability|\n|------|-------------|--------|\n| UnionPay verification | Send SMS text to account holder's mobile | Only available for individual bank account|\n| Small amount verification | Deposit random small amount to bank account | All type of bank account |",
         "parameters": [
           {
             "in": "body",
@@ -235,7 +235,7 @@
           }
         ],
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       }
     },
@@ -294,7 +294,7 @@
           }
         ],
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       },
       "delete": {
@@ -310,7 +310,7 @@
         },
         "description": "Delete bank account",
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       },
       "patch": {
@@ -355,7 +355,7 @@
           }
         ],
         "tags": [
-          "Member sub-account"
+          "Operations"
         ]
       }
     }

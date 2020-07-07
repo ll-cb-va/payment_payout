@@ -40,7 +40,7 @@
         ],
         "operationId": "get-document",
         "tags": [
-          "Document"
+          "Operations"
         ]
       },
       "parameters": [
@@ -75,7 +75,7 @@
         "description": "Download document file by `dcoumentId`. \n",
         "operationId": "download-document",
         "tags": [
-          "Document"
+          "Operations"
         ]
       },
       "parameters": [

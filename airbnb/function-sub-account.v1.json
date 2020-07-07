@@ -33,7 +33,7 @@
         "operationId": "get-function-account",
         "description": "Get the detail of all function sub-account\n\n|Code|Description|Usage|\n|--------|--------|----|\n|1|coupon account| fund in this account can be transfered to member account for marketing purpose |\n|2|commission account| fund belonged to platform will be deposited into this account |\n",
         "tags": [
-          "function sub-account"
+          "Operations"
         ]
       }
     }
