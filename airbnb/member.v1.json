@@ -26,7 +26,7 @@
           }
         },
         "summary": "Create Member Sub-Account",
-        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member sub-account` ojbect.",
+        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member Sub-Account` ojbect.",
         "produces": [
           "application/json"
         ],
