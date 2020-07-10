@@ -180,6 +180,16 @@
           "maxLength": 20,
           "description": "Top-up amount"
         },
+        "topUpDate": {
+          "type": "string",
+          "description": "Top-Up Date",
+          "maxLength": 8
+        },
+        "topUpTime": {
+          "type": "string",
+          "description": "Top-up Date",
+          "maxLength": 20
+        },
         "remark": {
           "type": "string",
           "maxLength": 300,
@@ -208,7 +218,9 @@
         "oldTopUpId",
         "amount",
         "remark",
-        "status"
+        "status",
+        "topUpDate",
+        "topUpTime"
       ]
     }
   }
