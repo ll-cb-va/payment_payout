@@ -61,16 +61,6 @@
                   "description": "Cash out amount",
                   "maxLength": 20
                 },
-                "payoutDate": {
-                  "type": "string",
-                  "description": "Transaction date",
-                  "maxLength": 8
-                },
-                "payoutTime": {
-                  "type": "string",
-                  "description": "Transaction time",
-                  "maxLength": 20
-                },
                 "remark": {
                   "type": "string",
                   "description": "Remark",
@@ -80,9 +70,7 @@
               "required": [
                 "payoutId",
                 "bankAccountNumber",
-                "amount",
-                "payoutDate",
-                "payoutTime"
+                "amount"
               ]
             },
             "description": ""

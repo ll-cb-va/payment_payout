@@ -47,65 +47,88 @@
             "schema": {
               "type": "object",
               "properties": {
-                "transferType": {
-                  "type": "string",
-                  "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
-                  "enum": [
-                    "1",
-                    "2",
-                    "3"
-                  ],
-                  "maxLength": 2
+                "batchId": {
+                  "type": "string"
                 },
-                "transferId": {
+                "batchAmount": {
                   "type": "string",
-                  "description": "Transfer ID",
-                  "maxLength": 52
+                  "maxLength": 20,
+                  "description": "Total amount of this batch"
                 },
-                "oldTransferId": {
-                  "type": "string",
-                  "description": "Original transfer ID, mandatory if the functionType = return",
-                  "maxLength": 52
-                },
-                "payChannelType": {
-                  "type": "string",
-                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
-                  "enum": [
-                    "0001",
-                    "0002"
-                  ],
-                  "maxLength": 20
-                },
-                "payChannelAssignMerNo": {
-                  "type": "string",
-                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
-                  "maxLength": 50
-                },
-                "payChannelTranSeqNo": {
-                  "type": "string",
-                  "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
-                  "maxLength": 52
-                },
-                "amount": {
-                  "type": "string",
-                  "description": "Tranaction amount",
-                  "maxLength": 20
-                },
-                "commission": {
-                  "type": "string",
-                  "description": "Commission fee",
-                  "maxLength": 20
-                },
-                "remark": {
-                  "type": "string",
-                  "description": "Remark",
-                  "maxLength": 300
+                "transfer": {
+                  "type": "array",
+                  "description": "transfer detail, each object represent a transfer",
+                  "maxItems": 15,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transferType": {
+                        "type": "string",
+                        "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+                        "enum": [
+                          "1",
+                          "2",
+                          "3"
+                        ],
+                        "maxLength": 2
+                      },
+                      "transferId": {
+                        "type": "string",
+                        "description": "Transfer ID",
+                        "maxLength": 52
+                      },
+                      "oldTransferId": {
+                        "type": "string",
+                        "description": "Original transfer ID, mandatory if the functionType = return",
+                        "maxLength": 52
+                      },
+                      "payChannelType": {
+                        "type": "string",
+                        "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+                        "enum": [
+                          "0001",
+                          "0002"
+                        ],
+                        "maxLength": 20
+                      },
+                      "payChannelAssignMerNo": {
+                        "type": "string",
+                        "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
+                        "maxLength": 50
+                      },
+                      "payChannelTranSeqNo": {
+                        "type": "string",
+                        "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
+                        "maxLength": 52
+                      },
+                      "amount": {
+                        "type": "string",
+                        "description": "Tranaction amount",
+                        "maxLength": 20
+                      },
+                      "commission": {
+                        "type": "string",
+                        "description": "Commission fee",
+                        "maxLength": 20
+                      },
+                      "remark": {
+                        "type": "string",
+                        "description": "Remark",
+                        "maxLength": 300
+                      }
+                    },
+                    "required": [
+                      "transferType",
+                      "transferId",
+                      "amount"
+                    ]
+                  }
                 }
               },
               "required": [
-                "transferType",
-                "transferId",
-                "amount"
+                "batchId",
+                "batchAmount",
+                "transfer"
               ]
             },
             "description": ""
@@ -132,13 +155,34 @@
         }
       ]
     },
-    "/members/{memberId}/transfer/{functionType}/{transferId}": {
+    "/members/{memberId}/transfer/{batchId}": {
       "get": {
         "responses": {
           "200": {
             "description": "",
             "schema": {
               "$ref": "#/definitions/transfer"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           },
           "": {
@@ -170,17 +214,9 @@
         },
         {
           "type": "string",
-          "name": "functionType",
+          "name": "batchId",
           "in": "path",
-          "required": true,
-          "description": "function type, one of:\n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |"
-        },
-        {
-          "type": "string",
-          "name": "transferId",
-          "in": "path",
-          "required": true,
-          "description": "Transfer ID"
+          "required": true
         }
       ]
     }
@@ -194,84 +230,20 @@
         "Models"
       ],
       "properties": {
-        "functionType": {
-          "type": "string",
-          "description": "function type, one of: \n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |",
-          "maxLength": 2,
-          "enum": [
-            "initial",
-            "cancel"
-          ]
-        },
-        "transferType": {
-          "type": "string",
-          "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
-          "maxLength": 1,
-          "enum": [
-            "1",
-            "2",
-            "3"
-          ],
-          "minLength": 1
-        },
-        "transferId": {
-          "type": "string",
-          "maxLength": 52,
-          "description": "Transfer ID"
-        },
-        "oldTransferId": {
-          "type": "string",
-          "description": "Original transferId, mandatory if the functionType = return",
-          "maxLength": 52
-        },
         "memberId": {
           "type": "string",
           "description": "Member ID from platform",
           "maxLength": 32
         },
-        "amount": {
+        "batchId": {
           "type": "string",
-          "description": "Transaction amount",
-          "maxLength": 20
-        },
-        "commission": {
-          "type": "string",
-          "description": "Commission fee",
-          "maxLength": 20
-        },
-        "payChannelType": {
-          "type": "string",
-          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
-          "maxLength": 20,
-          "enum": [
-            "0001",
-            "0002"
-          ]
-        },
-        "payChannelAssignMerNo": {
-          "type": "string",
-          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
-          "maxLength": 50
-        },
-        "payChannelTranSeqNo": {
-          "type": "string",
-          "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
+          "description": "Batch ID",
           "maxLength": 52
         },
-        "tranDate": {
+        "batchAmount": {
           "type": "string",
-          "description": "Transfer date",
-          "maxLength": 8
-        },
-        "tranTime": {
-          "type": "string",
-          "description": "Transfer time",
-          "maxLength": 20
-        },
-        "remark": {
-          "type": "string",
-          "description": "Remark",
-          "maxLength": 300
+          "maxLength": 20,
+          "description": "Total amount of this batch"
         },
         "status": {
           "type": "string",
@@ -287,18 +259,104 @@
           "type": "string",
           "description": "Error message if applicable",
           "maxLength": 300
+        },
+        "transfer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "functionType": {
+                "type": "string",
+                "description": "function type, one of: \n\n| Code | Description |\n|------|-------------|\n| initiate | Initiate a transaction |\n| return | Return a transaction |",
+                "maxLength": 2,
+                "enum": [
+                  "initial",
+                  "cancel"
+                ]
+              },
+              "transferType": {
+                "type": "string",
+                "description": "Transfer type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Credit member account for fund in transit |\n| 2 | Credit member account for marketing fund |\n| 3 | Debit member account to the platform's commission account |",
+                "maxLength": 1,
+                "enum": [
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "minLength": 1
+              },
+              "transferId": {
+                "type": "string",
+                "maxLength": 52,
+                "description": "Transfer ID"
+              },
+              "oldTransferId": {
+                "type": "string",
+                "description": "Original transferId, mandatory if the functionType = return",
+                "maxLength": 52
+              },
+              "amount": {
+                "type": "string",
+                "description": "Transaction amount",
+                "maxLength": 20
+              },
+              "commission": {
+                "type": "string",
+                "description": "Commission fee",
+                "maxLength": 20
+              },
+              "payChannelType": {
+                "type": "string",
+                "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nAcquirer, one of:\n\n| Code | Description |\n|------|-------------|\n| 0001 | Wechat |\n| 0002 | Alipay |",
+                "maxLength": 20,
+                "enum": [
+                  "0001",
+                  "0002"
+                ]
+              },
+              "payChannelAssignMerNo": {
+                "type": "string",
+                "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nMerchant number assigned to platform in acquirer's system",
+                "maxLength": 50
+              },
+              "payChannelTranSeqNo": {
+                "type": "string",
+                "description": "Mandatory only if transactionType = 1 & functionType = initiate\n\nTransaction number in acquirer's system",
+                "maxLength": 52
+              },
+              "tranDate": {
+                "type": "string",
+                "description": "Transfer date",
+                "maxLength": 8
+              },
+              "tranTime": {
+                "type": "string",
+                "description": "Transfer time",
+                "maxLength": 20
+              },
+              "remark": {
+                "type": "string",
+                "description": "Remark",
+                "maxLength": 300
+              }
+            },
+            "required": [
+              "functionType",
+              "transferType",
+              "transferId",
+              "amount",
+              "tranDate",
+              "tranTime"
+            ]
+          }
         }
       },
       "required": [
-        "functionType",
-        "transferType",
-        "transferId",
-        "oldTransferId",
         "memberId",
-        "amount",
-        "commission",
-        "tranDate",
-        "tranTime"
+        "batchId",
+        "batchAmount",
+        "status",
+        "transfer"
       ]
     }
   }
