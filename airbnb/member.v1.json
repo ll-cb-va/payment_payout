@@ -26,7 +26,7 @@
           }
         },
         "summary": "Create Member Sub-Account",
-        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member Sub-Account` ojbect.",
+        "description": "Create a sub account for each host to receive payment in Lianlian Pay bank partner's system.\n\nReturn type is `Member Sub-Account` object.",
         "produces": [
           "application/json"
         ],
@@ -49,22 +49,22 @@
                 "userNickName": {
                   "type": "string",
                   "description": "Member nick name",
-                  "maxLength": 150
+                  "maxLength": 120
                 },
                 "mobile": {
                   "type": "string",
                   "description": "Mobile number",
-                  "maxLength": 30
+                  "maxLength": 12
                 },
                 "email": {
                   "type": "string",
                   "description": "Email address",
-                  "maxLength": 150
+                  "maxLength": 120
                 },
                 "remark": {
                   "type": "string",
                   "description": "Remark",
-                  "maxLength": 300
+                  "maxLength": 120
                 }
               },
               "required": [
@@ -193,32 +193,32 @@
                 },
                 "memberName": {
                   "type": "string",
-                  "maxLength": 150,
+                  "maxLength": 120,
                   "description": "Member name"
                 },
                 "memberIdNumber": {
                   "type": "string",
-                  "maxLength": 32,
+                  "maxLength": 20,
                   "description": "Member ID number"
                 },
                 "bankAccountNumber": {
                   "type": "string",
-                  "maxLength": 50,
+                  "maxLength": 32,
                   "description": "Bank account number"
                 },
                 "bankName": {
                   "type": "string",
-                  "maxLength": 80,
+                  "maxLength": 120,
                   "description": "Bank name"
                 },
                 "bankCnapsCode": {
                   "type": "string",
-                  "maxLength": 30,
+                  "maxLength": 14,
                   "description": "Bank code defined in China National Advanced Payment System"
                 },
                 "mobile": {
                   "type": "string",
-                  "maxLength": 30,
+                  "maxLength": 12,
                   "description": "Mobile number registered in bank"
                 }
               },
@@ -304,7 +304,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/bank-account"
+              "type": "object"
             }
           }
         },
@@ -377,17 +377,17 @@
         "userNickName": {
           "type": "string",
           "description": "Member nick name",
-          "maxLength": 150
+          "maxLength": 120
         },
         "mobile": {
           "type": "string",
           "description": "Mobile number",
-          "maxLength": 30
+          "maxLength": 12
         },
         "email": {
           "type": "string",
           "description": "Email address",
-          "maxLength": 150
+          "maxLength": 120
         },
         "totalBalance": {
           "type": "string",
@@ -407,7 +407,7 @@
         "remark": {
           "type": "string",
           "description": "Remark",
-          "maxLength": 300
+          "maxLength": 120
         },
         "bankAccounts": {
           "type": "array",
@@ -415,6 +415,11 @@
           "items": {
             "$ref": "#/definitions/bank-account"
           }
+        },
+        "memberName": {
+          "type": "string",
+          "description": "Member Name",
+          "maxLength": 120
         }
       },
       "required": [
@@ -426,7 +431,8 @@
         "availableBalance",
         "lastModifyDate",
         "remark",
-        "bankAccounts"
+        "bankAccounts",
+        "memberName"
       ]
     },
     "bank-account": {
@@ -468,27 +474,27 @@
         "memberIdNumber": {
           "type": "string",
           "description": "Member ID number",
-          "maxLength": 32
+          "maxLength": 20
         },
         "memberName": {
           "type": "string",
           "description": "Member name",
-          "maxLength": 150
+          "maxLength": 120
         },
         "bankAccountNumber": {
           "type": "string",
           "description": "Bank account number or card number",
-          "maxLength": 80
+          "maxLength": 32
         },
         "bankCnapsCode": {
           "type": "string",
           "description": "Bank code defined in China National Advanced Payment System",
-          "maxLength": 30
+          "maxLength": 14
         },
         "mobile": {
           "type": "string",
           "description": "Mobile number registered in bank",
-          "maxLength": 30
+          "maxLength": 12
         }
       },
       "required": [

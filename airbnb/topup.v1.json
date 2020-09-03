@@ -56,12 +56,12 @@
                 },
                 "topUpId": {
                   "type": "string",
-                  "maxLength": 52,
-                  "description": "Transaction ID generated in platform's system"
+                  "description": "Transaction ID generated in platform's system",
+                  "maxLength": 64
                 },
                 "oldTopUpId": {
                   "type": "string",
-                  "maxLength": 52,
+                  "maxLength": 64,
                   "description": "Original transaction ID, mandatory if funactionType = return"
                 },
                 "amount": {
@@ -167,13 +167,13 @@
         },
         "topUpId": {
           "type": "string",
-          "maxLength": 52,
-          "description": "Top-up ID"
+          "description": "Top-up ID",
+          "maxLength": 64
         },
         "oldTopUpId": {
           "type": "string",
-          "maxLength": 52,
-          "description": "Original Top-up ID, mandatory if funactionType= return"
+          "description": "Original Top-up ID, mandatory if funactionType= return",
+          "maxLength": 64
         },
         "amount": {
           "type": "string",
@@ -192,8 +192,8 @@
         },
         "remark": {
           "type": "string",
-          "maxLength": 300,
-          "description": "Remark"
+          "description": "Remark",
+          "maxLength": 120
         },
         "status": {
           "type": "string",
@@ -217,10 +217,10 @@
         "topUpId",
         "oldTopUpId",
         "amount",
-        "remark",
-        "status",
         "topUpDate",
-        "topUpTime"
+        "topUpTime",
+        "remark",
+        "status"
       ]
     }
   }

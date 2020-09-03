@@ -49,7 +49,7 @@
                 "payoutId": {
                   "type": "string",
                   "description": "Payout ID generated in Platform System",
-                  "maxLength": 52
+                  "maxLength": 64
                 },
                 "bankAccountNumber": {
                   "type": "string",
@@ -148,7 +148,7 @@
         "payoutId": {
           "type": "string",
           "description": "Payout ID generated in Platform System",
-          "maxLength": 52
+          "maxLength": 64
         },
         "memberId": {
           "type": "string",
@@ -183,7 +183,7 @@
         "remark": {
           "type": "string",
           "description": "Remark",
-          "maxLength": 300
+          "maxLength": 120
         },
         "status": {
           "type": "string",
