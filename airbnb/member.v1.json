@@ -379,6 +379,27 @@
           "description": "Member nick name",
           "maxLength": 120
         },
+        "memberIdType": {
+          "type": "string",
+          "enum": [
+            "1",
+            "4",
+            "52",
+            "73"
+          ],
+          "maxLength": 5,
+          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |"
+        },
+        "memberName": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Member name"
+        },
+        "memberIdNumber": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Member ID number"
+        },
         "mobile": {
           "type": "string",
           "description": "Mobile number",
@@ -415,24 +436,15 @@
           "items": {
             "$ref": "#/definitions/bank-account"
           }
-        },
-        "memberName": {
-          "type": "string",
-          "description": "Member Name",
-          "maxLength": 120
         }
       },
       "required": [
         "memberId",
         "userNickName",
-        "mobile",
         "email",
         "totalBalance",
         "availableBalance",
-        "lastModifyDate",
-        "remark",
-        "bankAccounts",
-        "memberName"
+        "lastModifyDate"
       ]
     },
     "bank-account": {
