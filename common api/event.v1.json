@@ -26,6 +26,22 @@
                 "$ref": "#/definitions/event"
               }
             }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/event"
+              }
+            }
           }
         },
         "summary": "Get Event List",
@@ -46,6 +62,19 @@
       "get": {
         "responses": {
           "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/event"
+            }
+          },
+          "404": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
             "description": "",
             "schema": {
               "$ref": "#/definitions/event"
@@ -81,6 +110,9 @@
       "type": "object",
       "title": "Event",
       "description": "Event object generated during business processing in Lianlian Pay's system. ",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -99,7 +131,42 @@
         },
         "data": {
           "type": "object",
-          "description": "Event details"
+          "description": "Event details",
+          "required": [
+            "objectType",
+            "objectId"
+          ],
+          "properties": {
+            "objectType": {
+              "type": "string",
+              "description": "Object type related to this event.  ",
+              "enum": [
+                "payee",
+                "transaction"
+              ]
+            },
+            "objectId": {
+              "type": "string",
+              "description": "Id of the object that related in this event"
+            },
+            "url": {
+              "type": "string",
+              "description": "Event related API endpoint. Can be used to retrive the data object related to this event from Lianlian Pay's system. \n\nHttp method accepted is `GET`, type is `application/json`"
+            }
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Event status defined in Lianlian Pay's system. One of:\n\n| status | description |\n|--------|-------------|\n| PROCESSING | Event is under processing |\n| SUCCESS | Successfully notified client via webhook. Received `200` HTTP status code return from registered webhook URL. |\n| MAXIMUM_RETRIES_REACHED | Callback notification stopped as maximum retrying number reached. |",
+          "enum": [
+            "PROCESSING",
+            "SUCCESS",
+            "MAXIMUM_RETRIES_REACHED"
+          ]
+        },
+        "webhookURL": {
+          "type": "string",
+          "description": "Registered webhook url for this event"
         }
       },
       "required": [
@@ -107,9 +174,6 @@
         "topic",
         "createTime",
         "data"
-      ],
-      "x-tags": [
-        "Models"
       ]
     }
   }

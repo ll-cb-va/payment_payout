@@ -24,6 +24,27 @@
               "$ref": "#/definitions/payout"
             }
           },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |\n|L80001|duplicate payoutId|\n|L80002|Insufficient balance|",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "": {
             "schema": {
               "$ref": "#/definitions/payout"
@@ -95,6 +116,26 @@
         "responses": {
           "200": {
             "description": "",
+            "schema": {
+              "$ref": "#/definitions/payout"
+            }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
               "$ref": "#/definitions/payout"
             }

@@ -24,6 +24,27 @@
               "$ref": "#/definitions/document"
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "": {
             "schema": {
               "$ref": "#/definitions/document"
@@ -62,6 +83,13 @@
               "type": "string",
               "format": "byte",
               "description": "Document data streaming"
+            }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | \\[PARAMETER\\] ERROR_MESSAGE |",
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           },
           "404": {

@@ -28,6 +28,20 @@
                 "$ref": "#/definitions/functional-sub-account"
               }
             }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "operationId": "get-function-account",

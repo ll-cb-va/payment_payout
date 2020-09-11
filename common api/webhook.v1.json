@@ -23,6 +23,19 @@
             "schema": {
               "$ref": "#/definitions/webhook"
             }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | \\[PARAMETER\\] ERROR_MESSAGE |\n| 108012 | Duplicate Webhook Registration |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/webhook"
+            }
           }
         },
         "summary": "Register Webhook",
@@ -76,6 +89,13 @@
                 "$ref": "#/definitions/webhook"
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "summary": "Get Webhook Registration List",
@@ -100,6 +120,20 @@
             "schema": {
               "$ref": "#/definitions/webhook"
             }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "summary": "Get Webhook Registration",
@@ -122,6 +156,26 @@
             "schema": {
               "$ref": "#/definitions/webhook"
             }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | \\[PARAMETER\\] ERROR_MESSAGE |\n| 108012 | Duplicate Webhook Registration |\n",
+            "schema": {
+              "$ref": "#/definitions/webhook"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "summary": "Edit Webhook Registration",
@@ -141,19 +195,28 @@
               "type": "object",
               "properties": {
                 "isEnabled": {
-                  "type": "string"
+                  "type": "boolean",
+                  "description": "Enable/disable callbacks"
                 },
                 "url": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Client callback url"
                 },
                 "topics": {
                   "type": "array",
+                  "description": "Event topics in Lianlian Pay's system",
                   "items": {
                     "type": "string"
                   }
                 }
-              }
-            }
+              },
+              "required": [
+                "isEnabled",
+                "url",
+                "topics"
+              ]
+            },
+            "description": ""
           }
         ],
         "tags": [
@@ -173,6 +236,20 @@
         "responses": {
           "200": {
             "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
               "type": "object",
               "properties": {}
@@ -199,6 +276,9 @@
       "type": "object",
       "title": "Webhook",
       "description": "Object used in Lianlian Pay's system to describe the client registration of event callbacks.\n\nLianlian Pay uses this object to identify events which should be pushed back to client's url.",
+      "x-tags": [
+        "Models"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -234,9 +314,6 @@
         "isEnable",
         "createTime",
         "topics"
-      ],
-      "x-tags": [
-        "Models"
       ]
     }
   }

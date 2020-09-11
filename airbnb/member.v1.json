@@ -23,6 +23,20 @@
             "schema": {
               "$ref": "#/definitions/member"
             }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n| L10001 | memberId already exist |\n",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "summary": "Create Member Sub-Account",
@@ -90,6 +104,27 @@
               "$ref": "#/definitions/member"
             }
           },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "": {
             "schema": {
               "$ref": "#/definitions/member"
@@ -122,6 +157,27 @@
         "responses": {
           "200": {
             "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n| L20001 | account balance should be 0 |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
             "schema": {
               "type": "object",
               "properties": {}
@@ -160,6 +216,27 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/bank-account"
+            }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n| L30001 | can not bind the RMA account |\n| L30002 | memberName different with previous binding |\n| L30003 | this bank account already exist |\n| L30004 | unionPay verification can not support for this bank |\n| L30005 | bank account verification failed |\n| L30006 | Invaild bankCnapsCode |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           }
         },
@@ -266,6 +343,27 @@
               "$ref": "#/definitions/bank-account"
             }
           },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n|L50001|this bank account already binded|\n|L50002|frequent binding requests|\n|L50003|this bank acount is wait to be verified|",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
           "": {
             "schema": {
               "$ref": "#/definitions/bank-account"
@@ -306,6 +404,27 @@
             "schema": {
               "type": "object"
             }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "description": "Delete bank account",
@@ -321,6 +440,27 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/bank-account"
+            }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n|L40001|verification failed|\n|L40002|verification overtime, please re-trigger verification|\n|L40003|verification error over 6 times, please try again next day|",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           }
         },

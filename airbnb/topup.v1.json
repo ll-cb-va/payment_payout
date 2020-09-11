@@ -23,6 +23,27 @@
             "schema": {
               "$ref": "#/definitions/topup"
             }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |\n|L70001|duplicate topUpId|\n|L70002|oldTopUpId not exist|\n|L70003|Insufficient balance|\n|L70004|return amount exceed original amount|",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
           }
         },
         "summary": "Create Top-Up",
@@ -48,11 +69,6 @@
                   ],
                   "maxLength": 2,
                   "description": "transaction type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | Top-up for coupon account |"
-                },
-                "memberId": {
-                  "type": "string",
-                  "description": "Member ID from platform",
-                  "maxLength": 32
                 },
                 "topUpId": {
                   "type": "string",
@@ -104,6 +120,27 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/topup"
+            }
+          },
+          "400": {
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           }
         },
