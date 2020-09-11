@@ -25,7 +25,7 @@
             }
           },
           "400": {
-            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n| L10001 | memberId already exist |\n",
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999996 | Unknown_Error |\n| L10001 | memberId already exist |\n",
             "schema": {
               "type": "object",
               "properties": {}
@@ -105,7 +105,7 @@
             }
           },
           "400": {
-            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |",
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999996 | Unknown_Error |",
             "schema": {
               "type": "object",
               "properties": {}
@@ -163,7 +163,7 @@
             }
           },
           "400": {
-            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | Unknown_Error |\n| L20001 | account balance should be 0 |",
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999996 | Unknown_Error |\n| L20001 | account balance should be 0 |",
             "schema": {
               "type": "object",
               "properties": {}
@@ -406,7 +406,7 @@
             }
           },
           "400": {
-            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999997| externalchannel error |\n| 999996 | unknown_Error |",
+            "description": "Possible error codes:\n\n| Code | Description |\n|------|-------------|\n| 999995 | parameter error |\n| 999996 | unknown_Error |",
             "schema": {
               "type": "object",
               "properties": {}
@@ -614,7 +614,7 @@
         },
         "memberIdType": {
           "type": "string",
-          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 4 | Chinese Passport|\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
+          "description": "ID type, one of:\n\n| Code | Description |\n|------|-------------|\n| 1 | National ID |\n| 52 | Business Registration Certificate |\n| 73 | Unified social credit code |",
           "enum": [
             "1",
             "4",
