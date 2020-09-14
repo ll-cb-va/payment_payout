@@ -633,6 +633,11 @@
           "description": "Member name",
           "maxLength": 120
         },
+        "bankName": {
+          "type": "string",
+          "description": "Bank name",
+          "maxLength": 120
+        },
         "bankAccountNumber": {
           "type": "string",
           "description": "Bank account number or card number",
@@ -656,7 +661,8 @@
         "memberIdNumber",
         "memberName",
         "bankAccountNumber",
-        "mobile"
+        "mobile",
+        "bankName"
       ]
     }
   }
